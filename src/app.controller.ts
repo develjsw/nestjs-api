@@ -5,8 +5,11 @@ import { AppService } from './app.service';
 export class AppController {
   constructor(private readonly appService: AppService) {}
 
+  /**
+   * nestjs-in-api - health check
+   */
   @Get()
-  getHello(): string {
-    return this.appService.getHello();
+  health(): string {
+    return this.appService.health();
   }
 }
