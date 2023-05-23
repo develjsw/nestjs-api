@@ -6,6 +6,7 @@ import configurationLocal from './config/configuration.local';
 import configurationDevelopment from './config/configuration.development';
 import configurationProduction from './config/configuration.production';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { CommonCodeModule } from './common-code/common-code.module';
 
 let configuration;
 if (process.env.NODE_ENV === 'production') {
@@ -32,6 +33,7 @@ if (process.env.NODE_ENV === 'production') {
               configService.get('database'),
           inject: [ConfigService]
       }),
+      CommonCodeModule
   ],
   /* controller */
   controllers: [AppController],
