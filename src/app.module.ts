@@ -27,6 +27,7 @@ if (process.env.NODE_ENV === 'production') {
             configuration
         ]
       }),
+      /* TypeOrm 설정 */
       TypeOrmModule.forRootAsync({
           imports: [ConfigModule],
           useFactory: (configService: ConfigService) =>
