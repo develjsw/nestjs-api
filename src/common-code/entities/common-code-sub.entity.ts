@@ -1,4 +1,11 @@
-import { Column, Entity, PrimaryColumn } from 'typeorm';
+import {
+    Column,
+    Entity,
+    ManyToOne,
+    PrimaryColumn,
+    JoinColumn
+} from 'typeorm';
+import { CommonCodeMain } from './common-code-main.entity';
 
 @Entity('TB_COMMON_CODE_SUB')
 export class CommonCodeSub {
@@ -47,4 +54,10 @@ export class CommonCodeSub {
         name: 'DEL_DATE'
     })
     delDate?: Date;
+
+    @ManyToOne(() => CommonCodeMain, (main) => main.mainCd)
+    @JoinColumn({
+        name: 'MAIN_CD'
+    })
+    commonCodeMain: CommonCodeMain
 }

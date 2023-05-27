@@ -1,4 +1,11 @@
-import { Column, Entity, PrimaryColumn } from 'typeorm';
+import {
+    Column,
+    Entity,
+    OneToMany,
+    PrimaryColumn,
+    JoinColumn
+} from 'typeorm';
+import { CommonCodeSub } from './common-code-sub.entity';
 
 @Entity('TB_COMMON_CODE_MAIN') // 실제 테이블명
 export class CommonCodeMain {
@@ -38,4 +45,10 @@ export class CommonCodeMain {
         nullable: true
     })
     delDate?: Date;
+
+    @OneToMany(() => CommonCodeSub, (sub) => sub.mainCd)
+    @JoinColumn({
+        name: 'MAIN_CD'
+    })
+    commonCodeSubs!: CommonCodeSub[]
 }

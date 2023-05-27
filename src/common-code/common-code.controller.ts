@@ -1,22 +1,30 @@
-import { Controller, Get, Param } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Param,
+  ValidationPipe
+} from '@nestjs/common';
 import { CommonCodeService } from './common-code.service';
+import { FilterCommonCodeDto } from './dto/filter-common-code.dto';
 
-@Controller('common-code')
+@Controller('commonCode')
 export class CommonCodeController {
   constructor(
       private readonly commonCodeService: CommonCodeService
   ) {}
 
   @Get()
-  findAll() {
-    return this.commonCodeService.findAll();
+  async getAllListByGroup() {
+    return await this.commonCodeService.getAllListByGroup();
   }
 
-  @Get(':id')
-  findOne(
-      @Param('id') id: string
+  @Get('/:mainCd/subCodes')
+  async findSubCdListByMainCd(
+      @Param(new ValidationPipe()) filterCommonCodeDto: FilterCommonCodeDto
   ) {
-    return this.commonCodeService.findOne(+id);
+    return await this.commonCodeService.findSubCdListByMainCd(
+        filterCommonCodeDto.mainCd
+    );
   }
 
 }
