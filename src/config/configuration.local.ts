@@ -7,7 +7,7 @@ export default () => ({
         username: process.env.DATABASE_USERNAME,
         password: process.env.DATABASE_PASSWORD,
         database: process.env.DATABASE_SCHEMA,
-        entities: [__dirname + '/**/*.entity{.ts,.js}'], // entity 인식
+        entities: ['dist/**/entities/*.entity{.ts,.js}'], // entity 인식
         synchronize: false,
         logging: 'all'
     }
