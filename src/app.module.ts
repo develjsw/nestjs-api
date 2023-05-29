@@ -7,6 +7,8 @@ import configurationDevelopment from './config/configuration.development';
 import configurationProduction from './config/configuration.production';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { CommonCodeModule } from './common-code/common-code.module';
+import { APP_INTERCEPTOR } from '@nestjs/core';
+import { ResponseInterceptor } from './common/interceptor/response-interceptor';
 
 let configuration;
 if (process.env.NODE_ENV === 'production') {
@@ -39,6 +41,12 @@ if (process.env.NODE_ENV === 'production') {
   /* controller */
   controllers: [AppController],
   /* service */
-  providers: [AppService],
+  providers: [
+      AppService,
+      {
+        provide: APP_INTERCEPTOR,
+        useClass: ResponseInterceptor
+      }
+  ],
 })
 export class AppModule {}
