@@ -9,6 +9,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { CommonCodeModule } from './common-code/common-code.module';
 import { APP_INTERCEPTOR } from '@nestjs/core';
 import { ResponseInterceptor } from './common/interceptor/response-interceptor';
+import { MemberModule } from './member/member.module';
 
 let configuration;
 if (process.env.NODE_ENV === 'production') {
@@ -36,7 +37,8 @@ if (process.env.NODE_ENV === 'production') {
               configService.get('database'),
           inject: [ConfigService]
       }),
-      CommonCodeModule
+      CommonCodeModule,
+      MemberModule,
   ],
   /* controller */
   controllers: [AppController],
