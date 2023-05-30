@@ -1,11 +1,22 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  ParseIntPipe
+} from '@nestjs/common';
 import { MemberService } from './member.service';
 import { CreateMemberDto } from './dto/create-member.dto';
 import { UpdateMemberDto } from './dto/update-member.dto';
 
 @Controller('member')
 export class MemberController {
-  constructor(private readonly memberService: MemberService) {}
+  constructor(
+      private readonly memberService: MemberService
+  ) {}
 
   @Post()
   create(@Body() createMemberDto: CreateMemberDto) {
@@ -17,9 +28,11 @@ export class MemberController {
     return this.memberService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.memberService.findOne(+id);
+  @Get(':memberCd')
+  async findMemberByMemberCd(
+      @Param('memberCd', ParseIntPipe) memberCd: number
+  ) {
+    return await this.memberService.findMemberByMemberCd(memberCd);
   }
 
   @Patch(':id')

@@ -6,7 +6,7 @@ import {
     UpdateDateColumn
 } from 'typeorm';
 
-enum memberStatus {
+export enum memberStatus {
     A = '활성화',
     D = '탈퇴'
 }
@@ -44,22 +44,30 @@ export class Member {
     status: memberStatus;
 
     @CreateDateColumn({
-        name: 'REG_DATE'
+        type: 'datetime',
+        name: 'REG_DATE',
+        nullable: true
     })
-    regDate: Date;
+    regDate?: Date;
 
     @UpdateDateColumn({
-        name: 'MOD_DATE'
+        type: 'datetime',
+        name: 'MOD_DATE',
+        nullable: true
     })
-    modDate: Date;
+    modDate?: Date;
 
     @Column({
-        name: 'DEL_DATE'
+        type: 'datetime',
+        name: 'DEL_DATE',
+        nullable: true
     })
-    delDate: Date;
+    delDate?: Date;
 
     @Column({
-        name: 'DROP_DATE'
+        type: 'datetime',
+        name: 'DROP_DATE',
+        nullable: true
     })
-    dropDate: Date;
+    dropDate?: Date;
 }
