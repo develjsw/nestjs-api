@@ -6,7 +6,8 @@ import {
   Patch,
   Param,
   Delete,
-  ParseIntPipe
+  ParseIntPipe,
+  ValidationPipe, BadRequestException
 } from '@nestjs/common';
 import { MemberService } from './member.service';
 import { CreateMemberDto } from './dto/create-member.dto';
@@ -19,8 +20,14 @@ export class MemberController {
   ) {}
 
   @Post()
-  create(@Body() createMemberDto: CreateMemberDto) {
-    return this.memberService.create(createMemberDto);
+  async createMember(
+      @Body(new ValidationPipe()) createMemberDto: CreateMemberDto
+  ) {
+    const telPattern = /^[0-9]{3}-[0-9]{4}-[0-9]{4}/
+    if (telPattern.test(createMemberDto.tel) === false) {
+      throw new BadRequestException('연락처 형식 오류');
+    }
+    return await this.memberService.createMember(createMemberDto);
   }
 
   @Get()
