@@ -1,9 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { CreateMemberDto } from './dto/create-member.dto';
 import { UpdateMemberDto } from './dto/update-member.dto';
-import { Repository } from 'typeorm';
+import { InsertResult, Repository } from 'typeorm';
 import { Member, memberStatus } from './entities/member.entity';
 import { InjectRepository } from '@nestjs/typeorm';
+import { DBException } from '../common/exception/db-exception/db-exception';
+import { plainToClass } from 'class-transformer';
 
 // TODO : converting 관련 부분 분리 예정
 type MemberType = {
@@ -19,6 +21,7 @@ type MemberType = {
   dropDate: string;
 }
 
+// TODO : scope 생성 예정
 @Injectable()
 export class MemberService {
 
@@ -28,8 +31,39 @@ export class MemberService {
   ) {
   }
 
-  create(createMemberDto: CreateMemberDto) {
-    return 'This action adds a new member';
+  // TODO : return type 규칙 생성하여 적용 예정
+  async createMember(
+      createMemberDto: CreateMemberDto
+  ): Promise<any> {
+
+    try {
+      let status, message;
+      const memberDto = plainToClass(CreateMemberDto, createMemberDto);
+      memberDto.regDate = new Date();
+
+      const result = await this.memberRepository
+          .createQueryBuilder()
+          .insert()
+          .into(Member)
+          .values(memberDto)
+          .execute();
+
+      if (result.raw.affectedRows) {
+        status = 201;
+        message = 'success'
+      } else {
+        status = 200;
+        message = 'success'
+      }
+
+      return {
+        status: status,
+        message: message
+      }
+    } catch (error) {
+      throw new DBException(error);
+    }
+
   }
 
   findAll() {
