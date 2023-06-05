@@ -6,6 +6,7 @@ import { Member, memberStatus } from './entities/member.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { DBException } from '../common/exception/db-exception/db-exception';
 import { plainToClass } from 'class-transformer';
+import { ListMemberDto } from './dto/list-member.dto';
 
 // TODO : converting 관련 부분 분리 예정
 type MemberType = {
@@ -66,8 +67,27 @@ export class MemberService {
 
   }
 
-  findAll() {
-    return `This action returns all member`;
+  // TODO : 반환 형식 추가 및 공통화 필요
+  async getMemberList(
+      listMemberDto: ListMemberDto
+  ) {
+    let page = listMemberDto.page;
+    let pageSize = listMemberDto.pageSize;
+
+    const skip = (page - 1) * pageSize;
+
+    const data = await this.memberRepository
+        .createQueryBuilder('mem')
+        .select('mem.*')
+        .skip(skip)
+        .take(pageSize)
+        .execute();
+
+    const totalCount = await this.memberRepository
+        .createQueryBuilder('mem')
+        .getCount();
+
+    return { data, totalCount };
   }
 
   async findMemberByMemberCd(

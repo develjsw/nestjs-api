@@ -1,17 +1,14 @@
 import {
   Controller,
-  Get,
-  Post,
-  Body,
-  Patch,
-  Param,
-  Delete,
-  ParseIntPipe,
-  ValidationPipe, BadRequestException
+  Get, Post, Patch, Delete,
+  Body, Param, Query,
+  ParseIntPipe, ValidationPipe,
+  BadRequestException
 } from '@nestjs/common';
 import { MemberService } from './member.service';
 import { CreateMemberDto } from './dto/create-member.dto';
 import { UpdateMemberDto } from './dto/update-member.dto';
+import { ListMemberDto } from './dto/list-member.dto';
 
 @Controller('member')
 export class MemberController {
@@ -31,8 +28,10 @@ export class MemberController {
   }
 
   @Get()
-  findAll() {
-    return this.memberService.findAll();
+  async getMemberList(
+      @Query(new ValidationPipe()) listMemberDto: ListMemberDto
+  ) {
+    return await this.memberService.getMemberList(listMemberDto);
   }
 
   @Get(':memberCd')
