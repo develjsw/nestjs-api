@@ -10,5 +10,8 @@ export default () => ({
         entities: ['dist/**/entities/*.entity{.ts,.js}'], // entity 인식
         synchronize: false,
         logging: 'all'
+    },
+    slack: {
+        url: 'https://hooks.slack.com/services/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'
     }
 })
