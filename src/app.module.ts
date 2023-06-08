@@ -6,10 +6,12 @@ import configurationLocal from './config/configuration.local';
 import configurationDevelopment from './config/configuration.development';
 import configurationProduction from './config/configuration.production';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { CommonModule } from './common/common.module';
 import { CommonCodeModule } from './common-code/common-code.module';
 import { APP_INTERCEPTOR } from '@nestjs/core';
 import { ResponseInterceptor } from './common/interceptor/response-interceptor';
 import { MemberModule } from './member/member.module';
+import { SlackModule } from 'nestjs-slack-webhook';
 
 let configuration;
 if (process.env.NODE_ENV === 'production') {
@@ -37,6 +39,14 @@ if (process.env.NODE_ENV === 'production') {
               configService.get('database'),
           inject: [ConfigService]
       }),
+      /* SlackWebHook 설정 */
+      SlackModule.forRootAsync({
+          imports: [ConfigModule],
+          inject: [ConfigService],
+          useFactory: (configService: ConfigService) =>
+              configService.get('slack')
+      }),
+      CommonModule,
       CommonCodeModule,
       MemberModule,
   ],

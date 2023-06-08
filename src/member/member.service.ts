@@ -70,38 +70,26 @@ export class MemberService {
   // TODO : 반환 형식 추가 및 공통화 필요
   async getMemberList(
       listMemberDto: ListMemberDto
-  ) {
-    let page = listMemberDto.page;
-    let pageSize = listMemberDto.pageSize;
+  ): Promise<{
+    pagingInfo: {
+      page: number,
+      totalCount: number
+    }, data: MemberType[]
+  }> {
+    let page = Number(listMemberDto.page);
+    let pageSize = Number(listMemberDto.pageSize);
 
     const skip = (page - 1) * pageSize;
 
-    const data = await this.memberRepository
+    const rawDataList = await this.memberRepository
         .createQueryBuilder('mem')
         .select('mem.*')
         .skip(skip)
         .take(pageSize)
         .execute();
 
-    const totalCount = await this.memberRepository
-        .createQueryBuilder('mem')
-        .getCount();
-
-    return { data, totalCount };
-  }
-
-  async findMemberByMemberCd(
-      memberCd: number
-  ): Promise<Member> {
-
-    const selectResult = await this.memberRepository
-        .createQueryBuilder('mem')
-        .select('mem.*')
-        .where('mem.memberCd = :memberCd', { memberCd })
-        .execute();
-
     // TODO : 함수화하여 분리 예정
-    return selectResult.map((member): MemberType => {
+    const data = rawDataList.map((member) => {
       return {
         memberCd: member.member_cd,
         memberNm: member.member_nm,
@@ -115,6 +103,43 @@ export class MemberService {
         dropDate: member.drop_date
       }
     });
+
+    const totalCount = await this.memberRepository
+        .createQueryBuilder('mem')
+        .getCount();
+
+    return { pagingInfo: { page, totalCount }, data };
+  }
+
+  async findMemberByMemberCd(
+      memberCd: number
+  ): Promise<{
+    data
+  }> {
+
+    const rawData = await this.memberRepository
+        .createQueryBuilder('mem')
+        .select('mem.*')
+        .where('mem.memberCd = :memberCd', { memberCd })
+        .execute();
+
+    // TODO : 함수화하여 분리 예정
+    const data = rawData.map((member): MemberType => {
+      return {
+        memberCd: member.member_cd,
+        memberNm: member.member_nm,
+        nickName: member.nick_name,
+        tel: member.tel,
+        email: member.email,
+        status: member.status,
+        regDate: member.reg_date,
+        modDate: member.mod_date,
+        delDate: member.del_date,
+        dropDate: member.drop_date
+      }
+    });
+
+    return { data }
 
   }
 
