@@ -12,6 +12,6 @@ export default () => ({
         logging: 'all'
     },
     slack: {
-        url: 'https://hooks.slack.com/services/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'
+        url: process.env.SLACK_WEBHOOK_URL
     }
 })
