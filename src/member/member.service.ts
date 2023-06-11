@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { CreateMemberDto } from './dto/create-member.dto';
-import { UpdateMemberDto } from './dto/update-member.dto';
+import { ModifyMemberDto } from './dto/modify-member.dto';
 import { InsertResult, Repository } from 'typeorm';
 import { Member, memberStatus } from './entities/member.entity';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -8,20 +8,7 @@ import { DBException } from '../common/exception/db-exception/db-exception';
 import { plainToClass } from 'class-transformer';
 import { ListMemberDto } from './dto/list-member.dto';
 import { SlackService } from '../common/slack/slack.service';
-
-// TODO : converting 관련 부분 분리 예정
-type MemberType = {
-  memberCd: number;
-  memberNm: string;
-  nickName: string;
-  tel: string;
-  email: string;
-  status: memberStatus;
-  regDate: string;
-  modDate: string;
-  delDate: string;
-  dropDate: string;
-}
+import { MemberType } from './member-type';
 
 // TODO : scope 생성 예정
 @Injectable()
@@ -148,8 +135,30 @@ export class MemberService {
 
   }
 
-  update(id: number, updateMemberDto: UpdateMemberDto) {
-    return `This action updates a #${id} member`;
+  async modifyMember(
+      memberCd: number,
+      modifyMemberDto: ModifyMemberDto
+  ): Promise<any> {
+
+    try {
+      const memberDto = plainToClass(ModifyMemberDto, modifyMemberDto);
+      await this.memberRepository
+          .createQueryBuilder()
+          .update()
+          .set(memberDto)
+          .where('memberCd = :memberCd',{ memberCd })
+          .execute();
+
+      return {
+        status: 200,
+        message: 'success'
+      }
+
+    } catch (error) {
+      await this.slackService.send(`회원 수정 도중 에러 발생! - ${error}`);
+      throw new DBException(error);
+    }
+
   }
 
   remove(id: number) {
