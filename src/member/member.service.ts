@@ -8,20 +8,7 @@ import { DBException } from '../common/exception/db-exception/db-exception';
 import { plainToClass } from 'class-transformer';
 import { ListMemberDto } from './dto/list-member.dto';
 import { SlackService } from '../common/slack/slack.service';
-
-// TODO : converting 관련 부분 분리 예정
-type MemberType = {
-  memberCd: number;
-  memberNm: string;
-  nickName: string;
-  tel: string;
-  email: string;
-  status: memberStatus;
-  regDate: string;
-  modDate: string;
-  delDate: string;
-  dropDate: string;
-}
+import { MemberType } from './member-type';
 
 // TODO : scope 생성 예정
 @Injectable()
