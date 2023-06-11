@@ -7,7 +7,7 @@ import {
 } from '@nestjs/common';
 import { MemberService } from './member.service';
 import { CreateMemberDto } from './dto/create-member.dto';
-import { UpdateMemberDto } from './dto/update-member.dto';
+import { ModifyMemberDto } from './dto/modify-member.dto';
 import { ListMemberDto } from './dto/list-member.dto';
 
 @Controller('member')
@@ -41,9 +41,12 @@ export class MemberController {
     return await this.memberService.findMemberByMemberCd(memberCd);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateMemberDto: UpdateMemberDto) {
-    return this.memberService.update(+id, updateMemberDto);
+  @Patch(':memberCd')
+  async modifyMember(
+      @Param('memberCd', ParseIntPipe) memberCd: number,
+      @Body(new ValidationPipe()) updateMemberDto: ModifyMemberDto
+  ) {
+    return await this.memberService.modifyMember(memberCd, updateMemberDto);
   }
 
   @Delete(':id')
