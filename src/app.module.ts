@@ -36,7 +36,7 @@ if (process.env.NODE_ENV === 'production') {
       TypeOrmModule.forRootAsync({
           imports: [ConfigModule],
           useFactory: (configService: ConfigService) =>
-              configService.get('database'),
+              configService.get('database.dbMysql'),
           inject: [ConfigService]
       }),
       /* SlackWebHook 설정 */
