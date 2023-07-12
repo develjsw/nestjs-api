@@ -12,6 +12,7 @@ import { APP_INTERCEPTOR } from '@nestjs/core';
 import { ResponseInterceptor } from './common/interceptor/response-interceptor';
 import { MemberModule } from './member/member.module';
 import { SlackModule } from 'nestjs-slack-webhook';
+import { AuthModule } from './auth/auth.module';
 
 let configuration;
 if (process.env.NODE_ENV === 'production') {
@@ -49,6 +50,7 @@ if (process.env.NODE_ENV === 'production') {
       CommonModule,
       CommonCodeModule,
       MemberModule,
+      AuthModule,
   ],
   /* controller */
   controllers: [AppController],
