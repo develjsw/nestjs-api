@@ -1,12 +1,12 @@
-import { Module, CacheModule, Global } from '@nestjs/common';
+import { Module, Global } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { CacheModule } from '@nestjs/cache-manager';
 import * as redisStore from 'cache-manager-redis-store';
 import { RedisCacheService } from './redis-cache.service';
 
 @Global()
 @Module({
   imports: [
-      // TODO : CacheModule - Deprecated 대체 할 부분 확인하기.
       CacheModule.register({
           imports: [ConfigModule],
           inject: [ConfigService],
