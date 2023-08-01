@@ -1,11 +1,11 @@
-import { Connection, QueryRunner } from 'typeorm';
+import { DataSource, QueryRunner } from 'typeorm';
 
 export abstract class TransactionService {
     protected preparedQueryRunner?: QueryRunner; // 전달 받은 QueryRunner
     private queryRunner?: QueryRunner // 진행 상태의 QueryRunner
 
     protected constructor(
-        protected readonly connection: Connection
+        protected readonly connection: DataSource
     ) {}
 
     // 앞 서비스에서 선행 생성된 QueryRunner 전달
