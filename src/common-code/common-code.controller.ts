@@ -2,6 +2,7 @@ import {
   Controller,
   Get,
   Param,
+  Post,
   ValidationPipe
 } from '@nestjs/common';
 import { CommonCodeService } from './common-code.service';
@@ -27,4 +28,19 @@ export class CommonCodeController {
     );
   }
 
+  /**
+   * @deprecated - set data of redis
+   */
+  @Post('/test/redis')
+  async testSetDataOfRedis(): Promise<void> {
+    await this.commonCodeService.testSetDataOfRedis();
+  }
+
+  /**
+   * @deprecated - get data of redis
+   */
+  @Get('/test/redis')
+  async testGetDataOfRedis(): Promise<void> {
+    await this.commonCodeService.testGetDataOfRedis();
+  }
 }
