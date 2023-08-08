@@ -1,9 +1,10 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CommonCodeMain } from './entities/common-code-main.entity';
 import { CommonCodeSub } from './entities/common-code-sub.entity';
 import * as _ from 'lodash';
+import { RedisCacheService } from '../common/cache/redis-cache.service';
 
 @Injectable()
 export class CommonCodeService {
@@ -12,7 +13,9 @@ export class CommonCodeService {
       @InjectRepository(CommonCodeMain)
       private commonCodeMainRepository: Repository<CommonCodeMain>,
       @InjectRepository(CommonCodeSub)
-      private commonCodeSubRepository: Repository<CommonCodeSub>
+      private commonCodeSubRepository: Repository<CommonCodeSub>,
+      @Inject(RedisCacheService)
+      private redisCacheService: RedisCacheService
   ) {
   }
 
@@ -58,5 +61,19 @@ export class CommonCodeService {
         .orderBy('ccs.sortNo', 'ASC')
         .execute();
   }
+
+    /**
+     * @deprecated - set data of redis
+     */
+    async testSetDataOfRedis(): Promise<void> {
+        await this.redisCacheService.set('testKey', { testValue: 'test01' });
+    }
+
+    /**
+     * @deprecated - get data of redis
+     */
+    async testGetDataOfRedis(): Promise<void> {
+        console.log(await this.redisCacheService.get('testKey'));
+    }
 
 }
