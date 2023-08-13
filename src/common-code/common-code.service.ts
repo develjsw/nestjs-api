@@ -66,14 +66,14 @@ export class CommonCodeService {
      * @deprecated - set data of redis
      */
     async testSetDataOfRedis(): Promise<void> {
-        await this.redisCacheService.set('testKey', { testValue: 'test01' });
+        await this.redisCacheService.set('testKey', { testValue: 'test01' }, 60000);
     }
 
     /**
      * @deprecated - get data of redis
      */
-    async testGetDataOfRedis(): Promise<void> {
-        console.log(await this.redisCacheService.get('testKey'));
+    async testGetDataOfRedis(): Promise<any> {
+        return await this.redisCacheService.get('testKey');
     }
 
 }

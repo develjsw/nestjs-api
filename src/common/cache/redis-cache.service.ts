@@ -6,7 +6,7 @@ import { Cache } from 'cache-manager';
 export class RedisCacheService {
     constructor(
         @Inject(CACHE_MANAGER)
-        private cache: Cache
+        private cacheManager: Cache
     ) {}
 
     /**
@@ -14,24 +14,24 @@ export class RedisCacheService {
      * @param key
      */
     async get(key: string): Promise<any> {
-        return await this.cache.get(key);
+        return await this.cacheManager.get(key);
     }
 
     /**
      * 캐시 저장
-     * @param key
-     * @param value
-     * @param option
+     * @param key - key
+     * @param value - value
+     * @param option - TTL(Milliseconds) 값으로 optional 매개 변수
      */
     async set(key: string, value: any, option?: any): Promise<void> {
-        await this.cache.set(key, value, option);
+        await this.cacheManager.set(key, value, option);
     }
 
     /**
      * 전체 캐시 삭제
      */
     async reset(): Promise<void> {
-        await this.cache.reset();
+        await this.cacheManager.reset();
     }
 
     /**
@@ -39,6 +39,6 @@ export class RedisCacheService {
      * @param key
      */
     async del(key: string): Promise<void> {
-        await this.cache.del(key);
+        await this.cacheManager.del(key);
     }
 }

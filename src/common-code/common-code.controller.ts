@@ -40,7 +40,10 @@ export class CommonCodeController {
    * @deprecated - get data of redis
    */
   @Get('/test/redis')
-  async testGetDataOfRedis(): Promise<void> {
-    await this.commonCodeService.testGetDataOfRedis();
+  async testGetDataOfRedis(): Promise<any> {
+    const getDataOfRedis = await this.commonCodeService.testGetDataOfRedis();
+    return (getDataOfRedis)
+        ? getDataOfRedis
+        : "저장되어 있는 값이 없습니다. \n데이터 생성 API 호출 후 재시도 해주시기 바랍니다. - post:/commonCode/test/redis"
   }
 }
