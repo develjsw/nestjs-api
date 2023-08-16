@@ -18,4 +18,6 @@ export class ModifyMemberDto {
     @IsString()
     @IsEmail()
     email: string;
+
+    modDate: Date;
 }

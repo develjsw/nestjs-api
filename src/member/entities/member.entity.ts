@@ -6,7 +6,7 @@ import {
     UpdateDateColumn
 } from 'typeorm';
 
-export enum memberStatus {
+export enum EMemberStatus {
     A = '활성화',
     D = '탈퇴'
 }
@@ -41,7 +41,7 @@ export class Member {
     @Column('varchar', {
         name: 'STATUS'
     })
-    status: memberStatus;
+    status: EMemberStatus;
 
     @CreateDateColumn({
         type: 'datetime',

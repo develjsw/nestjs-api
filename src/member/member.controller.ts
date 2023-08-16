@@ -5,6 +5,7 @@ import {
   ParseIntPipe, ValidationPipe,
   BadRequestException
 } from '@nestjs/common';
+import { ResponseService } from '../common/response/response.service';
 import { MemberService } from './member.service';
 import { CreateMemberDto } from './dto/create-member.dto';
 import { ModifyMemberDto } from './dto/modify-member.dto';
@@ -13,6 +14,7 @@ import { ListMemberDto } from './dto/list-member.dto';
 @Controller('member')
 export class MemberController {
   constructor(
+      private readonly responseService: ResponseService,
       private readonly memberService: MemberService
   ) {}
 
@@ -24,21 +26,26 @@ export class MemberController {
     if (telPattern.test(createMemberDto.tel) === false) {
       throw new BadRequestException('연락처 형식 오류');
     }
-    return await this.memberService.createMember(createMemberDto);
+    await this.memberService.createMember(createMemberDto)
+    return this.responseService.start().responseBody;
   }
 
   @Get()
   async getMemberList(
       @Query(new ValidationPipe()) listMemberDto: ListMemberDto
   ) {
-    return await this.memberService.getMemberList(listMemberDto);
+    return this.responseService.start(
+        await this.memberService.getMemberList(listMemberDto)
+    ).responseBody;
   }
 
   @Get(':memberCd')
   async findMemberByMemberCd(
       @Param('memberCd', ParseIntPipe) memberCd: number
   ) {
-    return await this.memberService.findMemberByMemberCd(memberCd);
+    return this.responseService.start(
+        await this.memberService.findMemberByMemberCd(memberCd)
+    ).responseBody;
   }
 
   @Patch(':memberCd')
@@ -46,7 +53,8 @@ export class MemberController {
       @Param('memberCd', ParseIntPipe) memberCd: number,
       @Body(new ValidationPipe()) updateMemberDto: ModifyMemberDto
   ) {
-    return await this.memberService.modifyMember(memberCd, updateMemberDto);
+    await this.memberService.modifyMember(memberCd, updateMemberDto);
+    return this.responseService.start().responseBody;
   }
 
   @Delete(':id')
