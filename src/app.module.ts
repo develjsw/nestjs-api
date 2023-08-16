@@ -8,8 +8,6 @@ import configurationProduction from './config/configuration.production';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { CommonModule } from './common/common.module';
 import { CommonCodeModule } from './common-code/common-code.module';
-import { APP_INTERCEPTOR } from '@nestjs/core';
-import { ResponseInterceptor } from './common/interceptor/response-interceptor';
 import { MemberModule } from './member/member.module';
 import { SlackModule } from 'nestjs-slack-webhook';
 import { AuthModule } from './auth/auth.module';
@@ -57,10 +55,6 @@ if (process.env.NODE_ENV === 'production') {
   /* service */
   providers: [
       AppService,
-      {
-        provide: APP_INTERCEPTOR,
-        useClass: ResponseInterceptor
-      }
   ],
 })
 export class AppModule {}

@@ -4,7 +4,7 @@ import { ModifyMemberDto } from './dto/modify-member.dto';
 import { Repository } from 'typeorm';
 import { Member } from './entities/member.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import { DBException } from '../common/exception/db-exception/db-exception';
+import { DBException } from '../common/exception/db-exception';
 import { plainToClass } from 'class-transformer';
 import { ListMemberDto } from './dto/list-member.dto';
 import { SlackService } from '../common/slack/slack.service';
@@ -46,7 +46,7 @@ export class MemberService {
 
     } catch (error) {
       await this.slackService.send(`회원 생성 도중 에러 발생! - ${error}`);
-      throw new DBException(error);
+      throw new DBException(error.message);
     }
   }
 
@@ -111,7 +111,7 @@ export class MemberService {
 
     } catch (error) {
       await this.slackService.send(`회원 수정 도중 에러 발생! - ${error}`);
-      throw new DBException(error);
+      throw new DBException(error.message);
     }
   }
 
