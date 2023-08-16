@@ -19,7 +19,8 @@ export class CommonCodeService {
   ) {
   }
 
-  async getAllListByGroup() {
+  // TODO : Converting 후 반환 타입 넣기
+  async getAllListByGroup(): Promise<any> {
     const rawDataList = await this.commonCodeSubRepository
         .createQueryBuilder('ccs')
         .select([
@@ -41,7 +42,7 @@ export class CommonCodeService {
     return _.groupBy(rawDataList, 'mainCd');
   }
 
-  // TODO : return type 추가 예정
+  // TODO : Converting 후 반환 타입 넣기
   async findSubCdListByMainCd(mainCd: string) {
     return await this.commonCodeMainRepository
         .createQueryBuilder('ccm')

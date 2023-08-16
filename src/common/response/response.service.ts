@@ -25,6 +25,14 @@ export type TResponse = {
     }
 }
 
+export type TResponseOfPaging = {
+    pagingInfo: {
+        page: number,
+        totalCount: number
+    },
+    list: any[]
+}
+
 const makeResponseInfo = (code: number): TResponseInfo => {
     const responseInfoObj =
         responseInfoList[code.toString().padStart(4, '0')] || null;
