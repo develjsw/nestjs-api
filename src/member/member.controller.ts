@@ -57,8 +57,16 @@ export class MemberController {
     return this.responseService.start().responseBody;
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.memberService.remove(+id);
+  @Delete(':memberCd')
+  async removeMember(@Param('memberCd', ParseIntPipe) memberCd: number) {
+    const result = await this.memberService.removeMember(memberCd);
+    let msg = "데이터가 삭제 되었습니다.", code = 0;
+
+    if (result === 0) {
+      code = 9902;
+      msg = "삭제 할 데이터가 없습니다."
+    }
+
+    return this.responseService.start({ delMemberCd: memberCd }, code, msg).responseBody
   }
 }

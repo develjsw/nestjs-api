@@ -115,7 +115,11 @@ export class MemberService {
     }
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} member`;
+  async removeMember(memberCd: number) {
+    try {
+      return (await this.memberRepository.delete(memberCd)).affected
+    } catch (error) {
+      throw new DBException(error.message);
+    }
   }
 }

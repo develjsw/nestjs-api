@@ -1,6 +1,7 @@
 import {
     EMemberStatus
 } from '../entities/member.entity';
+import * as moment from 'moment';
 
 export type TMember = {
     memberCd: number;
@@ -24,11 +25,18 @@ export function convertMemberList(list: []): TMember[] {
             tel: raw.tel,
             email: raw.email,
             status: raw.status,
-            /* TODO : date format 변경 예정 */
-            regDate: raw.reg_date,
-            modDate: raw.mod_date,
-            delDate: raw.del_date,
-            dropDate: raw.drop_date
+            regDate: (raw.reg_date)
+                ? moment(raw.reg_date).format('YYYY-MM-DD HH:mm:ss')
+                : null,
+            modDate: (raw.mod_date)
+                ? moment(raw.mod_date).format('YYYY-MM-DD HH:mm:ss')
+                : null,
+            delDate: (raw.del_date)
+                ? moment(raw.del_date).format('YYYY-MM-DD HH:mm:ss')
+                : null,
+            dropDate: (raw.drop_date)
+              ? moment(raw.drop_date).format('YYYY-MM-DD HH:mm:ss')
+              : null,
         }
     })
 }
@@ -41,10 +49,17 @@ export function convertMember(raw): TMember {
         tel: raw.tel,
         email: raw.email,
         status: raw.status,
-        /* TODO : date format 변경 예정 */
-        regDate: raw.reg_date,
-        modDate: raw.mod_date,
-        delDate: raw.del_date,
-        dropDate: raw.drop_date
+        regDate: (raw.reg_date)
+            ? moment(raw.reg_date).format('YYYY-MM-DD HH:mm:ss')
+            : null,
+        modDate: (raw.mod_date)
+            ? moment(raw.mod_date).format('YYYY-MM-DD HH:mm:ss')
+            : null,
+        delDate: (raw.del_date)
+            ? moment(raw.del_date).format('YYYY-MM-DD HH:mm:ss')
+            : null,
+        dropDate: (raw.drop_date)
+            ? moment(raw.drop_date).format('YYYY-MM-DD HH:mm:ss')
+            : null,
     }
 }
