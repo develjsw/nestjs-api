@@ -97,7 +97,7 @@ export class MemberService {
   async modifyMember(
       memberCd: number,
       modifyMemberDto: ModifyMemberDto
-  ): Promise<any> {
+  ): Promise<void> {
     try {
       const memberDto = plainToClass(ModifyMemberDto, modifyMemberDto);
         memberDto.modDate = this.nowDate;
@@ -115,7 +115,9 @@ export class MemberService {
     }
   }
 
-  async removeMember(memberCd: number) {
+  async removeMember(
+      memberCd: number
+  ): Promise<number> {
     try {
       return (await this.memberRepository.delete(memberCd)).affected
     } catch (error) {
