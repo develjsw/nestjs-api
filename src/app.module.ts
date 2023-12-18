@@ -11,6 +11,7 @@ import { CommonCodeModule } from './common-code/common-code.module';
 import { MemberModule } from './member/member.module';
 import { SlackModule } from 'nestjs-slack-webhook';
 import { AuthModule } from './auth/auth.module';
+import { TestModule } from './test/test.module';
 
 let configuration;
 if (process.env.NODE_ENV === 'production') {
@@ -49,6 +50,7 @@ if (process.env.NODE_ENV === 'production') {
       CommonCodeModule,
       MemberModule,
       AuthModule,
+      TestModule,
   ],
   /* controller */
   controllers: [AppController],
