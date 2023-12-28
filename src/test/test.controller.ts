@@ -1,22 +1,14 @@
 import {
-  Controller,
-  Get,
-  Post,
-  Patch,
-  Delete,
-  Body,
-  Param,
-  Query,
-  ParseIntPipe,
-  ValidationPipe,
-  BadRequestException,
-  Inject,
-  UnprocessableEntityException
+    Controller,
+    Get,
+    Post,
+    Body,
+    ValidationPipe,
 } from '@nestjs/common'
 import { ResponseService } from '../common/response/response.service'
-import { TestService } from './test.service'
 import { TestDto } from './dto/test.dto'
 import { PersonService } from './extends-abstract-class/person.service'
+import { FirstQueryExecuteService } from './transaction/prepared-query-runner/first-query-execute.service';
 
 @Controller('test')
 export class TestController {
@@ -27,15 +19,16 @@ export class TestController {
     constructor(
         private readonly responseService: ResponseService,
         // DI 방식 2 - 생성자에서 주입하는 방법
-        private testService: TestService,
+        // private testService: TestService,
+        private firstQueryExecuteService: FirstQueryExecuteService,
         private personService: PersonService,
     ) {}
 
-    @Post('transaction')
-    async transactionTest(
-      @Body(new ValidationPipe()) testDto: TestDto
+    @Post('transaction/prepared-query-runner')
+    async testPreparedQueryRunner(
+        @Body(new ValidationPipe()) testDto: TestDto
     ) {
-        await this.testService.transactionTestForTwoInsertQuery(testDto);
+        await this.firstQueryExecuteService.transactionTestForTwoInsertQuery(testDto);
     }
 
     @Get('extents-abstract-class')
