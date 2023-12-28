@@ -16,6 +16,7 @@ import {
 import { ResponseService } from '../common/response/response.service'
 import { TestService } from './test.service'
 import { TestDto } from './dto/test.dto'
+import { PersonService } from './extends-abstract-class/person.service'
 
 @Controller('test')
 export class TestController {
@@ -26,7 +27,8 @@ export class TestController {
     constructor(
         private readonly responseService: ResponseService,
         // DI 방식 2 - 생성자에서 주입하는 방법
-        private testService: TestService
+        private testService: TestService,
+        private personService: PersonService,
     ) {}
 
     @Post('transaction')
@@ -34,5 +36,14 @@ export class TestController {
       @Body(new ValidationPipe()) testDto: TestDto
     ) {
         await this.testService.transactionTestForTwoInsertQuery(testDto);
+    }
+
+    @Get('extents-abstract-class')
+    async extentsAbstractClass() {
+        const result = await this.personService.getJobInfoOfEachPerson(
+            'web-developer', { 'kind': ['Front-End', 'Back-End'] } // Test Case1
+            //'qa-tester', { 'work': ['요구사항 명세 분석', '테스트 계획 작성', '테스트 진행'] } // Test Case2
+        );
+        return this.responseService.start(result).responseBody
     }
 }
