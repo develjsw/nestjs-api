@@ -1,21 +1,21 @@
-import { InternalServerErrorException } from '@nestjs/common';
-import { DataSource, Repository } from 'typeorm';
+import { TestDto } from '../../dto/test.dto';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Member } from '../member/entities/member.entity';
-import { DBException } from '../common/exception/db-exception';
-import { TestDto } from './dto/test.dto';
-import { Test2Service } from './test2.service';
-import { TransactionService } from '../common/transaction/transaction.service';
+import { Member } from '../../../member/entities/member.entity';
+import { DataSource, Repository } from 'typeorm';
+import { DBException } from '../../../common/exception/db-exception';
+import { InternalServerErrorException } from '@nestjs/common';
 import { plainToInstance } from 'class-transformer';
+import { TransactionService } from '../../../common/transaction/transaction.service';
+import { LastQueryExecuteService } from './last-query-execute.service';
 
-export class TestService extends TransactionService {
+export class FirstQueryExecuteService extends TransactionService {
     private testDto: TestDto;
 
     constructor(
-        @InjectRepository(Member)
-        private memberRepository: Repository<Member>,
-        protected readonly dataSource: DataSource,
-        private test2Service: Test2Service
+      @InjectRepository(Member)
+      private memberRepository: Repository<Member>,
+      protected readonly dataSource: DataSource,
+      private lastQueryExecuteService: LastQueryExecuteService,
     ) {
         super(dataSource);
     }
@@ -25,13 +25,13 @@ export class TestService extends TransactionService {
 
         const queryRunner = await this.makeQueryRunner();
         await this.startTransaction();
-        console.log("1번");
+        console.log('1번');
 
         try {
             await this.firstInsertQuery(queryRunner);
-            await this.test2Service.setQueryRunner(queryRunner).secondInsertQuery(this.testDto);
+            await this.lastQueryExecuteService.setQueryRunner(queryRunner).secondInsertQuery(this.testDto);
 
-            console.log("4-1번 (commit)");
+            console.log('4-1번 (commit)');
             await this.commitTransaction();
         } catch(error) {
             console.log("4-2번 (rollback)");
@@ -42,13 +42,13 @@ export class TestService extends TransactionService {
                 throw new InternalServerErrorException();
             }
         } finally {
-            console.log("4-3번 (release)");
+            console.log('4-3번 (release)');
             await this.releaseQueryRunner();
         }
     }
 
     async firstInsertQuery(queryRunner) {
-        console.log("2번");
+        console.log('2번');
         try {
             await queryRunner.manager.save(plainToInstance(Member, this.testDto));
             // throw new InternalServerErrorException(); // 롤백 확인용1
