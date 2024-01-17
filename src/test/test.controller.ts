@@ -9,6 +9,8 @@ import { ResponseService } from '../common/response/response.service'
 import { TestDto } from './dto/test.dto'
 import { PersonService } from './extends-abstract-class/person.service'
 import { FirstQueryExecuteService } from './transaction/prepared-query-runner/first-query-execute.service';
+import { DeveloperService } from './implements-interface/developer.service';
+import { DesignerService } from './implements-interface/designer.service';
 
 @Controller('test')
 export class TestController {
@@ -22,6 +24,8 @@ export class TestController {
         // private testService: TestService,
         private firstQueryExecuteService: FirstQueryExecuteService,
         private personService: PersonService,
+        private developerService: DeveloperService,
+        private designerService: DesignerService,
     ) {}
 
     @Post('transaction/prepared-query-runner')
@@ -37,6 +41,13 @@ export class TestController {
             'web-developer', { 'kind': ['Front-End', 'Back-End'] } // Test Case1
             //'qa-tester', { 'work': ['요구사항 명세 분석', '테스트 계획 작성', '테스트 진행'] } // Test Case2
         );
+        return this.responseService.start(result).responseBody
+    }
+
+    @Get('implements-interface')
+    async implementsInterface() {
+        const result = await this.developerService.getPersonInfo(); // Test Case1
+        //const result = await this.designerService.getPersonInfo(); // Test Case2
         return this.responseService.start(result).responseBody
     }
 }
