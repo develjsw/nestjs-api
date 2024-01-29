@@ -1,7 +1,7 @@
 import { HttpException, HttpStatus } from '@nestjs/common';
 
 export class DBException extends HttpException {
-    //readonly code: number = 9904;
+    readonly code: number = 9904;
 
     constructor(
         message: string,

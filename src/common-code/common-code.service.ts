@@ -1,79 +1,47 @@
-import { Inject, Injectable } from '@nestjs/common';
-import { Repository } from 'typeorm';
-import { InjectRepository } from '@nestjs/typeorm';
-import { CommonCodeMain } from './entities/common-code-main.entity';
-import { CommonCodeSub } from './entities/common-code-sub.entity';
-import * as _ from 'lodash';
+import { Inject, Injectable, InternalServerErrorException } from '@nestjs/common';
 import { RedisCacheService } from '../common/cache/redis-cache.service';
 import { redisKey } from '../config/redis-key';
+import { CommonCodeMainRepository } from './repository/common-code-main.repository';
+import { CommonCodeSubRepository } from './repository/common-code-sub.repository';
+import { DBException } from '../common/exception/db-exception';
 
 @Injectable()
 export class CommonCodeService {
-  constructor(
-      @InjectRepository(CommonCodeMain)
-      private commonCodeMainRepository: Repository<CommonCodeMain>,
-      @InjectRepository(CommonCodeSub)
-      private commonCodeSubRepository: Repository<CommonCodeSub>,
-      @Inject(RedisCacheService)
-      private redisCacheService: RedisCacheService
-  ) {
-  }
+    constructor(
+        @Inject(RedisCacheService)
+        private redisCacheService: RedisCacheService,
+        private readonly commonCodeMainRepository: CommonCodeMainRepository,
+        private readonly commonCodeSubRepository: CommonCodeSubRepository
+    ) {}
 
-  // TODO : Converting 후 반환 타입 넣기
   async getAllListByGroup(): Promise<any> {
-      const rawDataList = await this.commonCodeSubRepository
-          .createQueryBuilder('ccs')
-          .select([
-              'ccm.mainCd as mainCd',
-              'ccm.mainNm as mainNm',
-              'ccs.subCd as subCd',
-              'ccs.subNm as subNm',
-              'ccs.codeDesc as codeDesc',
-              'ccs.sortNo as sortNo',
-          ])
-          .leftJoin(CommonCodeMain, 'ccm', 'ccs.mainCd = ccm.mainCd')
-          .where('ccs.isUse = "Y"')
-          .andWhere('ccm.isUse = "Y"')
-          .andWhere('ccs.delDate IS NULL')
-          .andWhere('ccm.delDate IS NULL')
-          .orderBy('ccs.sortNo', 'ASC')
-          .execute();
-
-      return _.groupBy(rawDataList, 'mainCd');
+      try {
+          return await this.commonCodeSubRepository.getAllListByGroup()
+      } catch (error: any) {
+          throw new DBException(error.message);
+      }
   }
 
-  // TODO : Converting 후 반환 타입 넣기
   async findSubCdListByMainCd(mainCd: string) {
-      const redisKeyOfMainCd = await this.modifyRedisKey(redisKey.inApi.common.code.main, mainCd, '{mainCd}');
-      const redisValue = await this.redisCacheService.get(redisKeyOfMainCd);
+      try {
+          const redisValue = await this.redisCacheService.get(
+              await this.modifyRedisKey(redisKey.inApi.common.code.main, mainCd, '{mainCd}')
+          );
 
-      if (redisValue) {
-          return redisValue
-      } else {
-          const result = await this.commonCodeMainRepository
-              .createQueryBuilder('ccm')
-              .select([
-                'ccm.mainCd as mainCd',
-                'ccm.mainNm as mainNm',
-                'ccs.subCd as subCd',
-                'ccs.subNm as subNm',
-                'ccs.sortNo as sortNo'
-              ])
-              .leftJoin(CommonCodeSub, 'ccs', 'ccm.mainCd = ccs.mainCd')
-              .where('ccm.mainCd = :mainCd', { mainCd })
-              .andWhere('ccm.isUse = "Y"')
-              .andWhere('ccm.delDate IS NULL')
-              .andWhere('ccs.isUse = "Y"')
-              .andWhere('ccs.delDate IS NULL')
-              .orderBy('ccs.sortNo', 'ASC')
-              .execute();
-
-          if (result.length) {
-              await this.redisCacheService.set(
-                  await this.modifyRedisKey(redisKey.inApi.common.code.main, mainCd, '{mainCd}'), result, 1000 * 60
-              );
+          if (redisValue) {
+              return redisValue
+          } else {
+              const result = await this.commonCodeMainRepository.findSubCdListByMainCd(mainCd)
+              if (result.length) {
+                  await this.redisCacheService.set(
+                      await this.modifyRedisKey(redisKey.inApi.common.code.main, mainCd, '{mainCd}'), result, 1000 * 60
+                  );
+              }
+              return result;
           }
-          return result;
+      } catch (error: any) {
+          // TODO : Error 예외처리 변경예정
+          throw new InternalServerErrorException()
       }
   }
 
