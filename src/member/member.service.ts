@@ -1,103 +1,96 @@
 import { Inject, Injectable, Scope } from '@nestjs/common';
 import { CreateMemberDto } from './dto/create-member.dto';
 import { ModifyMemberDto } from './dto/modify-member.dto';
-import { Repository } from 'typeorm';
-import { Member } from './entities/member.entity';
-import { InjectRepository } from '@nestjs/typeorm';
 import { DBException } from '../common/exception/db-exception';
 import { plainToClass } from 'class-transformer';
 import { ListMemberDto } from './dto/list-member.dto';
 import { SlackService } from '../common/slack/slack.service';
 import { TResponseOfPaging } from '../common/response/response.service';
 import {
-  TMember,
-  convertMemberList,
-  convertMember
+    TMember,
+    convertMemberList,
+    convertMember
 } from './type/member-type';
+import { MemberRepository } from './repositories/member.repository';
+import * as moment from 'moment/moment';
+import { Member } from './entities/member.entity';
 
 @Injectable({ scope: Scope.REQUEST })
 export class MemberService {
+    private readonly nowDate;
 
-  private readonly nowDate;
-
-  @Inject(SlackService)
-  private readonly slackService: SlackService
-
-  constructor(
-      @InjectRepository(Member)
-      private readonly memberRepository: Repository<Member>
-  ) {
-    this.nowDate = new Date();
-  }
-
-  async createMember(
-      createMemberDto: CreateMemberDto
-  ): Promise<void> {
-    try {
-      const memberDto = plainToClass(CreateMemberDto, createMemberDto);
-        memberDto.regDate = this.nowDate;
-
-      await this.memberRepository
-        .createQueryBuilder()
-        .insert()
-        .into(Member)
-        .values(memberDto)
-        .execute();
-
-    } catch (error) {
-      await this.slackService.send(`회원 생성 도중 에러 발생! - ${error}`);
-      throw new DBException(error.message);
+    constructor(
+        @Inject(SlackService)
+        private readonly slackService: SlackService,
+        private readonly memberRepository: MemberRepository
+    ) {
+        this.nowDate = new Date();
     }
-  }
 
-  async getMemberList(
-      listMemberDto: ListMemberDto
-  ): Promise<TResponseOfPaging> {
-    let page = Number(listMemberDto.page);
-    let pageSize = Number(listMemberDto.pageSize);
-    const skip = (page - 1) * pageSize;
-    let list: TMember[];
+    async createMember(createMemberDto: CreateMemberDto): Promise<CreateMemberDto> {
+        try {
+            const memberDto = plainToClass(CreateMemberDto, createMemberDto);
+            memberDto.regDate = this.nowDate;
 
-    const totalCount = await this.memberRepository
-        .createQueryBuilder('mem')
-        .getCount();
+            // TODO : ISO 8601 형식의 날짜와 시간 변환 필요
+            return await this.memberRepository.createMember(memberDto)
+        } catch (error) {
+            await this.slackService.send(`회원 생성 도중 에러 발생! - ${error}`);
+            throw new DBException(error.message);
+        }
+    }
 
-    const rawDataList = await this.memberRepository
-        .createQueryBuilder('mem')
-        .select('mem.*')
-        .skip(skip)
-        .take(pageSize)
-        .execute();
+    async getMemberList(listMemberDto: ListMemberDto): Promise<TResponseOfPaging> {
+        let page = Number(listMemberDto.page);
+        let pageSize = Number(listMemberDto.pageSize);
+        const skip = (page - 1) * pageSize;
 
-    list = convertMemberList(rawDataList);
+        const list = await this.memberRepository.getMemberList(pageSize, skip)
 
-    return { pagingInfo: { page, totalCount }, list };
-  }
+        let convertList = [];
+        convertList = list.map((item) => {
+            return {
+                memberCd: item.memberCd,
+                memberNm: item.memberNm,
+                nickName: item.nickName,
+                tel: item.tel,
+                email: item.email,
+                status: item.status,
+                regDate: (item.regDate)
+                    ? moment(item.regDate).format('YYYY-MM-DD HH:mm:ss')
+                    : null,
+                modDate: (item.modDate)
+                    ? moment(item.modDate).format('YYYY-MM-DD HH:mm:ss')
+                    : null,
+                delDate: (item.delDate)
+                    ? moment(item.delDate).format('YYYY-MM-DD HH:mm:ss')
+                    : null,
+                dropDate: (item.dropDate)
+                    ? moment(item.dropDate).format('YYYY-MM-DD HH:mm:ss')
+                    : null,
+            }
+        })
 
-  async findMemberByMemberCd(
-      memberCd: number
-  ): Promise<TMember> {
-    let data: TMember;
+        const totalCount = await this.memberRepository.getMemberListCount()
 
-    const rawData = await this.memberRepository
-        .createQueryBuilder('mem')
-        .select('mem.*')
-        .where('mem.memberCd = :memberCd', { memberCd })
-        .execute();
+        return {
+            pagingInfo: { page, totalCount }, list: convertList
+        };
+    }
 
-    const [result] = rawData;
-
-    data = (result)
-      ? convertMember(result)
-      : rawData;
-
-    return data;
-  }
+    async findMemberByMemberCd(memberCd: number): Promise<Member | object> {
+        // TODO : ISO 8601 형식의 날짜와 시간 변환 필요
+        const result = await this.memberRepository.getMemberByCode(memberCd)
+        return (result)
+            ? result
+            : {}
+    }
 
   async modifyMember(
       memberCd: number,
       modifyMemberDto: ModifyMemberDto
   ): Promise<void> {
+    /*
     try {
       const memberDto = plainToClass(ModifyMemberDto, modifyMemberDto);
         memberDto.modDate = this.nowDate;
@@ -113,15 +106,19 @@ export class MemberService {
       await this.slackService.send(`회원 수정 도중 에러 발생! - ${error}`);
       throw new DBException(error.message);
     }
+    */
   }
 
   async removeMember(
       memberCd: number
   ): Promise<number> {
+    return 1
+    /*
     try {
       return (await this.memberRepository.delete(memberCd)).affected
     } catch (error) {
       throw new DBException(error.message);
     }
+    */
   }
 }
