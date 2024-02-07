@@ -1,8 +1,8 @@
 import { Inject, Injectable, InternalServerErrorException } from '@nestjs/common';
 import { RedisCacheService } from '../common/cache/redis-cache.service';
 import { redisKey } from '../config/redis-key';
-import { CommonCodeMainRepository } from './repository/common-code-main.repository';
-import { CommonCodeSubRepository } from './repository/common-code-sub.repository';
+import { CommonCodeMainRepository } from './repositories/common-code-main.repository';
+import { CommonCodeSubRepository } from './repositories/common-code-sub.repository';
 import { DBException } from '../common/exception/db-exception';
 
 @Injectable()
