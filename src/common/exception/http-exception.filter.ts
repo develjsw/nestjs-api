@@ -12,6 +12,7 @@ import { Request, Response } from 'express'
 import { ResponseService } from '../response/response.service';
 import { inspect } from 'util'
 import { DBException } from './db-exception';
+import { ManagerException } from './manager-exception';
 
 @Catch()
 export class HttpExceptionFilter implements ExceptionFilter {
@@ -92,7 +93,9 @@ export class HttpExceptionFilter implements ExceptionFilter {
     }
 
     private getCodeByException(exception: HttpException): number {
-        if (exception instanceof NotFoundException) {
+        if (exception instanceof ManagerException) {
+            return exception.code
+        } else if (exception instanceof NotFoundException) {
             return 9901
         } else if (exception instanceof BadRequestException) {
             return 9902
