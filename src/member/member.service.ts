@@ -5,12 +5,12 @@ import { DBException } from '../common/exception/db-exception';
 import { plainToClass } from 'class-transformer';
 import { ListMemberDto } from './dto/list-member.dto';
 import { SlackService } from '../common/slack/slack.service';
-import { TResponseOfPaging } from '../common/response/response.service';
 import {
-    TMember,
-    convertMemberList,
-    convertMember
-} from './type/member-type';
+    InsertResponse,
+    UpdateResponse,
+    DeleteResponse,
+    TResponseOfPaging
+} from '../common/response/response.service';
 import { MemberRepository } from './repositories/member.repository';
 import * as moment from 'moment/moment';
 import { Member } from './entities/member.entity';
@@ -27,11 +27,11 @@ export class MemberService {
         this.nowDate = new Date();
     }
 
-    async createMember(createMemberDto: CreateMemberDto): Promise<CreateMemberDto> {
-        try {
-            const memberDto = plainToClass(CreateMemberDto, createMemberDto);
-            memberDto.regDate = this.nowDate;
+    async createMember(createMemberDto: CreateMemberDto): Promise<InsertResponse> {
+        const memberDto = plainToClass(CreateMemberDto, createMemberDto);
+        memberDto.regDate = this.nowDate;
 
+        try {
             // TODO : ISO 8601 형식의 날짜와 시간 변환 필요
             return await this.memberRepository.createMember(memberDto)
         } catch (error) {
@@ -86,39 +86,25 @@ export class MemberService {
             : {}
     }
 
-  async modifyMember(
-      memberCd: number,
-      modifyMemberDto: ModifyMemberDto
-  ): Promise<void> {
-    /*
-    try {
-      const memberDto = plainToClass(ModifyMemberDto, modifyMemberDto);
+    async modifyMember(memberCd: number, modifyMemberDto: ModifyMemberDto): Promise<UpdateResponse> {
+        const memberDto = plainToClass(ModifyMemberDto, modifyMemberDto);
         memberDto.modDate = this.nowDate;
 
-      await this.memberRepository
-          .createQueryBuilder()
-          .update()
-          .set(memberDto)
-          .where('memberCd = :memberCd',{ memberCd })
-          .execute();
-
-    } catch (error) {
-      await this.slackService.send(`회원 수정 도중 에러 발생! - ${error}`);
-      throw new DBException(error.message);
+        try {
+            return await this.memberRepository.modifyMember(memberCd, memberDto);
+        } catch (error) {
+            await this.slackService.send(`회원 수정 도중 에러 발생! - ${error}`);
+            throw new DBException(error.message);
+        }
     }
-    */
-  }
 
-  async removeMember(
-      memberCd: number
-  ): Promise<number> {
-    return 1
-    /*
-    try {
-      return (await this.memberRepository.delete(memberCd)).affected
-    } catch (error) {
-      throw new DBException(error.message);
+    // Hard Delete
+    async removeMember(memberCd: number): Promise<DeleteResponse> {
+        try {
+            return await this.memberRepository.removeMember(memberCd);
+        } catch (error) {
+            await this.slackService.send(`회원 삭제 도중 에러 발생! - ${error}`);
+            throw new DBException(error.message);
+        }
     }
-    */
-  }
 }

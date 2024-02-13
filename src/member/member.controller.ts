@@ -1,9 +1,15 @@
 import {
-  Controller,
-  Get, Post, Patch, Delete,
-  Body, Param, Query,
-  ParseIntPipe, ValidationPipe,
-  BadRequestException
+    Controller,
+    Get,
+    Post,
+    Patch,
+    Delete,
+    Body,
+    Param,
+    Query,
+    ParseIntPipe,
+    ValidationPipe,
+    BadRequestException
 } from '@nestjs/common';
 import { ResponseService } from '../common/response/response.service';
 import { MemberService } from './member.service';
@@ -53,8 +59,8 @@ export class MemberController {
         @Param('memberCd', ParseIntPipe) memberCd: number,
         @Body(new ValidationPipe()) updateMemberDto: ModifyMemberDto
     ) {
-        await this.memberService.modifyMember(memberCd, updateMemberDto);
-        return this.responseService.start().responseBody;
+        const result = await this.memberService.modifyMember(memberCd, updateMemberDto);
+        return this.responseService.start(result).responseBody;
     }
 
     @Delete(':memberCd')
@@ -62,12 +68,6 @@ export class MemberController {
         @Param('memberCd', ParseIntPipe) memberCd: number
     ) {
         const result = await this.memberService.removeMember(memberCd);
-        let msg = "데이터가 삭제 되었습니다.", code = 0;
-
-        if (result === 0) {
-            code = 9902;
-            msg = "삭제 할 데이터가 없습니다."
-        }
-        return this.responseService.start({ delMemberCd: memberCd }, code, msg).responseBody
+        return this.responseService.start(result).responseBody
     }
 }
