@@ -33,6 +33,20 @@ export type TResponseOfPaging = {
     list: any[]
 }
 
+interface TypeOrmOperationResult {
+    affected: number
+}
+export interface UpdateResponse extends TypeOrmOperationResult {
+    [primaryKeyName: string]: number // ex) memberCd: number
+}
+export interface DeleteResponse extends TypeOrmOperationResult {
+    [primaryKeyName: string]: number // ex) memberCd: number
+}
+type TInsertResult = {
+    [primaryKeysName: string]: Array<any> // ex memberCds: []
+}
+export interface InsertResponse extends TInsertResult {}
+
 const makeResponseInfo = (code: number): TResponseInfo => {
     const responseInfoObj =
         responseInfoList[code.toString().padStart(4, '0')] || null;
