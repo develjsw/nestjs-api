@@ -32,8 +32,7 @@ export class MemberService {
         memberDto.regDate = this.nowDate;
 
         try {
-            // TODO : ISO 8601 형식의 날짜와 시간 변환 필요
-            return await this.memberRepository.createMember(memberDto)
+            return await this.memberRepository.createMember(memberDto);
         } catch (error) {
             await this.slackService.send(`회원 생성 도중 에러 발생! - ${error}`);
             throw new DBException(error.message);
@@ -45,7 +44,7 @@ export class MemberService {
         let pageSize = Number(listMemberDto.pageSize);
         const skip = (page - 1) * pageSize;
 
-        const list = await this.memberRepository.getMemberList(pageSize, skip)
+        const list = await this.memberRepository.getMemberList(pageSize, skip);
 
         let convertList = [];
         convertList = list.map((item) => {
@@ -79,11 +78,32 @@ export class MemberService {
     }
 
     async findMemberByMemberCd(memberCd: number): Promise<Member | object> {
-        // TODO : ISO 8601 형식의 날짜와 시간 변환 필요
-        const result = await this.memberRepository.getMemberByCode(memberCd)
-        return (result)
-            ? result
-            : {}
+        const result = await this.memberRepository.getMemberByCode(memberCd);
+
+        let convertData = {};
+        if (result) {
+            convertData = {
+                memberCd: result.memberCd,
+                memberNm: result.memberNm,
+                nickName: result.nickName,
+                tel: result.tel,
+                email: result.email,
+                status: result.status,
+                regDate: (result.regDate)
+                    ? moment(result.regDate).format('YYYY-MM-DD HH:mm:ss')
+                    : null,
+                modDate: (result.modDate)
+                    ? moment(result.modDate).format('YYYY-MM-DD HH:mm:ss')
+                    : null,
+                delDate: (result.delDate)
+                    ? moment(result.delDate).format('YYYY-MM-DD HH:mm:ss')
+                    : null,
+                dropDate: (result.dropDate)
+                    ? moment(result.dropDate).format('YYYY-MM-DD HH:mm:ss')
+                    : null,
+            }
+        }
+        return convertData
     }
 
     async modifyMember(memberCd: number, modifyMemberDto: ModifyMemberDto): Promise<UpdateResponse> {
