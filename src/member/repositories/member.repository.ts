@@ -3,36 +3,32 @@ import { DataSource, Repository } from 'typeorm';
 import { Member } from '../entities/member.entity';
 import { CreateMemberDto } from '../dto/create-member.dto';
 import { ModifyMemberDto } from '../dto/modify-member.dto';
-import {
-    DeleteResponse,
-    InsertResponse,
-    UpdateResponse
-} from '../../common/response/response.service';
+import { DeleteResponse, InsertResponse, UpdateResponse } from '../../common/response/response.service';
 
 @Injectable()
 export class MemberRepository {
-    private memberRepository: Repository<Member>
+    private memberRepository: Repository<Member>;
 
     constructor(private readonly dataSource: DataSource) {
-        this.memberRepository = dataSource.getRepository(Member)
+        this.memberRepository = dataSource.getRepository(Member);
     }
 
     async createMember(createMemberDto: CreateMemberDto): Promise<InsertResponse> {
         const result = await this.memberRepository.insert(createMemberDto);
         const { identifiers: memberCdList } = result;
         const memberCds = memberCdList.map((item) => {
-            return item.memberCd
+            return item.memberCd;
         });
 
         return {
-            memberCds: memberCds,
-        }
+            memberCds: memberCds
+        };
     }
 
     async getMemberList(pageSize: number, skip: number): Promise<Array<Member>> {
         return await this.memberRepository.find({
             order: {
-                regDate: "DESC"
+                regDate: 'DESC'
             },
             skip: skip,
             take: pageSize
@@ -46,7 +42,7 @@ export class MemberRepository {
     async getMemberByCode(memberCd: number): Promise<Member | null> {
         return await this.memberRepository.findOne({
             where: { memberCd }
-        })
+        });
     }
 
     async modifyMember(memberCd: number, modifyMemberDto: ModifyMemberDto): Promise<UpdateResponse> {
@@ -56,7 +52,7 @@ export class MemberRepository {
         return {
             affected: affected,
             memberCd: memberCd
-        }
+        };
     }
 
     async removeMember(memberCd: number): Promise<DeleteResponse> {
@@ -66,6 +62,6 @@ export class MemberRepository {
         return {
             affected: affected,
             memberCd: memberCd
-        }
+        };
     }
 }

@@ -10,9 +10,7 @@ import { DeveloperService } from './implements-interface/developer.service';
 import { DesignerService } from './implements-interface/designer.service';
 
 @Module({
-    imports: [
-        TypeOrmModule.forFeature([Member])
-    ],
+    imports: [TypeOrmModule.forFeature([Member])],
     controllers: [TestController],
     providers: [
         ResponseService,
@@ -20,7 +18,7 @@ import { DesignerService } from './implements-interface/designer.service';
         LastQueryExecuteService,
         PersonService,
         DeveloperService,
-        DesignerService,
+        DesignerService
     ]
 })
 export class TestModule {}

@@ -14,7 +14,6 @@ export class SlackService {
     async send(text: string): Promise<void> {
         await this.notify({
             text
-        })
+        });
     }
-
 }

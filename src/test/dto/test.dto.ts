@@ -1,49 +1,48 @@
 import { IsIn, IsNumber, IsOptional, IsString } from 'class-validator';
 
-type TTestStatus = 'A'|'B'
+type TTestStatus = 'A' | 'B';
 
 export class TestDto {
     @IsOptional()
     @IsNumber()
-    memberCd: number
+    memberCd: number;
 
     @IsOptional()
     @IsString()
-    memberNm: string
+    memberNm: string;
 
     @IsOptional()
     @IsString()
-    nickName: string
+    nickName: string;
 
     @IsOptional()
     @IsString()
-    password: string
+    password: string;
 
     @IsOptional()
     @IsString()
-    tel: string
+    tel: string;
 
     @IsOptional()
     @IsString()
-    email: string
+    email: string;
 
     @IsOptional()
     @IsString()
-    @IsIn(['A','B'], { message: 'Type mismatch' })
-    status: TTestStatus
+    @IsIn(['A', 'B'], { message: 'Type mismatch' })
+    status: TTestStatus;
 }
 
 export class TestDateDto {
     @IsOptional()
-    regDate: Date
+    regDate: Date;
 
     @IsOptional()
-    modDate: Date
+    modDate: Date;
 
     @IsOptional()
-    delDate: Date
+    delDate: Date;
 
     @IsOptional()
-    dropDate: Date
+    dropDate: Date;
 }
-

@@ -36,6 +36,5 @@ export class LastQueryExecuteService extends TransactionService {
             console.log('3-3번 (release)');
             await this.releaseQueryRunner();
         }
-
     }
 }

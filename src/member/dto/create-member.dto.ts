@@ -11,7 +11,7 @@ export class CreateMemberDto {
 
     @IsNotEmpty()
     @IsString()
-    @Length(13,13)
+    @Length(13, 13)
     tel: string;
 
     @IsOptional()

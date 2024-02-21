@@ -23,8 +23,8 @@ export class DeveloperService implements PersonInterface {
                 [ typeof, instanceof, in ]
                 하지만 TJob과 TDeveloper의 경우 인스턴스나 객체가 아니며 typeof로 정확한 타입을 판별하기 어렵기에 타입 단언을 사용할 수 밖에 없다.
             */
-            jobType: memberInfo.jobType as TJob,        // 타입 단언(방법1)으로 타입 명시 (안적는 경우 에러 발생)
-            workArea: <TDeveloper>memberInfo.workArea   // 타입 단언(방법2)으로 타입 명시 (안적는 경우 에러 발생)
-        }
+            jobType: memberInfo.jobType as TJob, // 타입 단언(방법1)으로 타입 명시 (안적는 경우 에러 발생)
+            workArea: <TDeveloper>memberInfo.workArea // 타입 단언(방법2)으로 타입 명시 (안적는 경우 에러 발생)
+        };
     }
 }

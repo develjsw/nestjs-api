@@ -6,10 +6,10 @@ import * as _ from 'lodash';
 
 @Injectable()
 export class CommonCodeSubRepository {
-    private commonCodeSubRepository: Repository<CommonCodeSub>
+    private commonCodeSubRepository: Repository<CommonCodeSub>;
 
     constructor(private readonly dataSource: DataSource) {
-        this.commonCodeSubRepository = this.dataSource.getRepository(CommonCodeSub)
+        this.commonCodeSubRepository = this.dataSource.getRepository(CommonCodeSub);
     }
 
     async getAllListByGroup() {
@@ -21,7 +21,7 @@ export class CommonCodeSubRepository {
                 'ccs.subCd as subCd',
                 'ccs.subNm as subNm',
                 'ccs.codeDesc as codeDesc',
-                'ccs.sortNo as sortNo',
+                'ccs.sortNo as sortNo'
             ])
             .leftJoin(CommonCodeMain, 'ccm', 'ccs.mainCd = ccm.mainCd')
             .where('ccs.isUse = "Y"')
@@ -29,8 +29,8 @@ export class CommonCodeSubRepository {
             .andWhere('ccs.delDate IS NULL')
             .andWhere('ccm.delDate IS NULL')
             .orderBy('ccs.sortNo', 'ASC')
-            .execute()
+            .execute();
 
-        return _.groupBy(rawDataList, 'mainCd')
+        return _.groupBy(rawDataList, 'mainCd');
     }
 }

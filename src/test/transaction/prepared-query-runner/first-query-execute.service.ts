@@ -12,10 +12,10 @@ export class FirstQueryExecuteService extends TransactionService {
     private testDto: TestDto;
 
     constructor(
-      @InjectRepository(Member)
-      private memberRepository: Repository<Member>,
-      protected readonly dataSource: DataSource,
-      private lastQueryExecuteService: LastQueryExecuteService,
+        @InjectRepository(Member)
+        private memberRepository: Repository<Member>,
+        protected readonly dataSource: DataSource,
+        private lastQueryExecuteService: LastQueryExecuteService
     ) {
         super(dataSource);
     }
@@ -33,8 +33,8 @@ export class FirstQueryExecuteService extends TransactionService {
 
             console.log('4-1번 (commit)');
             await this.commitTransaction();
-        } catch(error) {
-            console.log("4-2번 (rollback)");
+        } catch (error) {
+            console.log('4-2번 (rollback)');
             await this.rollbackTransaction();
             if (error instanceof DBException) {
                 throw error;
@@ -52,7 +52,7 @@ export class FirstQueryExecuteService extends TransactionService {
         try {
             await queryRunner.manager.save(plainToInstance(Member, this.testDto));
             // throw new InternalServerErrorException(); // 롤백 확인용1
-        } catch(error: any) {
+        } catch (error: any) {
             throw new DBException(error.message);
         }
     }

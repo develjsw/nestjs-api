@@ -9,12 +9,12 @@ const responseInfoList = {
     '9905': { message: 'Duplicated Request' },
     '9906': { message: 'API Request Fail' },
     '9907': { message: 'Decrypt Fail' },
-    '9999': { message: 'Internal Server Error' },
-}
+    '9999': { message: 'Internal Server Error' }
+};
 
 export type TResponseInfo = {
     message: string;
-}
+};
 
 export type TResponse = {
     body: {
@@ -22,41 +22,40 @@ export type TResponse = {
         message: string;
         desc?: string;
         data?: object;
-    }
-}
+    };
+};
 
 export type TResponseOfPaging = {
     pagingInfo: {
-        page: number,
-        totalCount: number
-    },
-    list: any[]
-}
+        page: number;
+        totalCount: number;
+    };
+    list: any[];
+};
 
 interface TypeOrmOperationResult {
-    affected: number
+    affected: number;
 }
 export interface UpdateResponse extends TypeOrmOperationResult {
-    [primaryKeyName: string]: number // ex) memberCd: number
+    [primaryKeyName: string]: number; // ex) memberCd: number
 }
 export interface DeleteResponse extends TypeOrmOperationResult {
-    [primaryKeyName: string]: number // ex) memberCd: number
+    [primaryKeyName: string]: number; // ex) memberCd: number
 }
 type TInsertResult = {
-    [primaryKeysName: string]: Array<any> // ex memberCds: []
-}
-export interface InsertResponse extends TInsertResult {}
+    [primaryKeysName: string]: Array<any>; // ex memberCds: []
+};
+export type InsertResponse = TInsertResult;
 
 const makeResponseInfo = (code: number): TResponseInfo => {
-    const responseInfoObj =
-        responseInfoList[code.toString().padStart(4, '0')] || null;
+    const responseInfoObj = responseInfoList[code.toString().padStart(4, '0')] || null;
 
     if (!responseInfoObj) {
         throw new Error('empty code:' + code);
     } else {
         return responseInfoObj;
     }
-}
+};
 
 const Response = class {
     readonly body: {
@@ -64,7 +63,7 @@ const Response = class {
         message: string;
         desc?: string;
         data?: object;
-    }
+    };
 
     private responseInfoObj: TResponseInfo;
 
@@ -74,10 +73,10 @@ const Response = class {
             code: code,
             message: this.responseInfoObj.message,
             desc: desc,
-            data,
-        }
+            data
+        };
     }
-}
+};
 
 @Injectable()
 export class ResponseService {

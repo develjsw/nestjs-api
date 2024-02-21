@@ -3,13 +3,13 @@ import { AppService } from './app.service';
 
 @Controller('health')
 export class AppController {
-  constructor(private readonly appService: AppService) {}
+    constructor(private readonly appService: AppService) {}
 
-  /**
-   * nestjs-in-api - health check
-   */
-  @Get()
-  health(): string {
-    return this.appService.health();
-  }
+    /**
+     * nestjs-in-api - health check
+     */
+    @Get()
+    health(): string {
+        return this.appService.health();
+    }
 }

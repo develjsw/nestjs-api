@@ -4,6 +4,6 @@ import { ShortUrlService } from './short-url.service';
 @Module({
     imports: [],
     providers: [ShortUrlService],
-    exports: [ShortUrlService],
+    exports: [ShortUrlService]
 })
 export class ShortUrlModule {}

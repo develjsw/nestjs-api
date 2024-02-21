@@ -9,18 +9,8 @@ import { CommonCodeMainRepository } from './repositories/common-code-main.reposi
 import { CommonCodeSubRepository } from './repositories/common-code-sub.repository';
 
 @Module({
-    imports: [
-        TypeOrmModule.forFeature([
-            CommonCodeMain,
-            CommonCodeSub
-        ])
-    ],
+    imports: [TypeOrmModule.forFeature([CommonCodeMain, CommonCodeSub])],
     controllers: [CommonCodeController],
-    providers: [
-        ResponseService,
-        CommonCodeService,
-        CommonCodeMainRepository,
-        CommonCodeSubRepository,
-    ]
+    providers: [ResponseService, CommonCodeService, CommonCodeMainRepository, CommonCodeSubRepository]
 })
 export class CommonCodeModule {}

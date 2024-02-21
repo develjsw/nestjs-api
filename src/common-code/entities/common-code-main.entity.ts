@@ -1,10 +1,4 @@
-import {
-    Column,
-    Entity,
-    OneToMany,
-    PrimaryColumn,
-    JoinColumn
-} from 'typeorm';
+import { Column, Entity, OneToMany, PrimaryColumn, JoinColumn } from 'typeorm';
 import { CommonCodeSub } from './common-code-sub.entity';
 
 @Entity('TB_COMMON_CODE_MAIN') // 실제 테이블명
@@ -50,5 +44,5 @@ export class CommonCodeMain {
     @JoinColumn({
         name: 'MAIN_CD'
     })
-    commonCodeSubs!: CommonCodeSub[]
+    commonCodeSubs!: CommonCodeSub[];
 }
