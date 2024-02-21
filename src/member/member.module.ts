@@ -7,16 +7,8 @@ import { MemberService } from './member.service';
 import { MemberRepository } from './repositories/member.repository';
 
 @Module({
-    imports: [
-        TypeOrmModule.forFeature([
-            Member
-        ])
-    ],
+    imports: [TypeOrmModule.forFeature([Member])],
     controllers: [MemberController],
-    providers: [
-        ResponseService,
-        MemberService,
-        MemberRepository,
-    ]
+    providers: [ResponseService, MemberService, MemberRepository]
 })
 export class MemberModule {}

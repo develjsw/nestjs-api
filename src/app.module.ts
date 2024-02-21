@@ -23,40 +23,34 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 @Module({
-  /* module */
-  imports: [
-      ConfigModule.forRoot({
-        isGlobal: true,
-        cache: true,
-        load: [
-            configuration
-        ]
-      }),
-      /* TypeOrm 설정 */
-      TypeOrmModule.forRootAsync({
-          imports: [ConfigModule],
-          useFactory: (configService: ConfigService) =>
-              configService.get('database.dbMysql'),
-          inject: [ConfigService]
-      }),
-      /* SlackWebHook 설정 */
-      SlackModule.forRootAsync({
-          imports: [ConfigModule],
-          inject: [ConfigService],
-          useFactory: (configService: ConfigService) =>
-              configService.get('slack')
-      }),
-      CommonModule,
-      CommonCodeModule,
-      MemberModule,
-      AuthModule,
-      TestModule,
-  ],
-  /* controller */
-  controllers: [AppController],
-  /* service */
-  providers: [
-      AppService,
-  ],
+    /* module */
+    imports: [
+        ConfigModule.forRoot({
+            isGlobal: true,
+            cache: true,
+            load: [configuration]
+        }),
+        /* TypeOrm 설정 */
+        TypeOrmModule.forRootAsync({
+            imports: [ConfigModule],
+            useFactory: (configService: ConfigService) => configService.get('database.dbMysql'),
+            inject: [ConfigService]
+        }),
+        /* SlackWebHook 설정 */
+        SlackModule.forRootAsync({
+            imports: [ConfigModule],
+            inject: [ConfigService],
+            useFactory: (configService: ConfigService) => configService.get('slack')
+        }),
+        CommonModule,
+        CommonCodeModule,
+        MemberModule,
+        AuthModule,
+        TestModule
+    ],
+    /* controller */
+    controllers: [AppController],
+    /* service */
+    providers: [AppService]
 })
 export class AppModule {}

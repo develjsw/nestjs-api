@@ -15,7 +15,7 @@ export class DesignerService implements PersonInterface {
         const memberInfo = await this.getDesignerInfo();
         return {
             name: memberInfo.name,
-            jobType: <TJob>memberInfo.jobType   // 타입 단언(방법2)으로 타입 명시 (안적는 경우 에러 발생)
-        }
+            jobType: <TJob>memberInfo.jobType // 타입 단언(방법2)으로 타입 명시 (안적는 경우 에러 발생)
+        };
     }
 }

@@ -9,12 +9,12 @@ export interface PersonInterface {
 }
 
 export interface TPersonInfo {
-    name: string,
-    age?: number
-    jobType: TJob,
-    workArea?: TDeveloper | TDesigner
+    name: string;
+    age?: number;
+    jobType: TJob;
+    workArea?: TDeveloper | TDesigner;
 }
 
-export type TJob = 'developer' | 'designer' | 'lawyer' | 'doctor'
-export type TDeveloper = 'Back-End' | 'Front-End'
-export type TDesigner = '시각디자인' | '패키지디자인' | '공예디자인'
+export type TJob = 'developer' | 'designer' | 'lawyer' | 'doctor';
+export type TDeveloper = 'Back-End' | 'Front-End';
+export type TDesigner = '시각디자인' | '패키지디자인' | '공예디자인';

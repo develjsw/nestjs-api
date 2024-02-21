@@ -7,7 +7,7 @@
 */
 export abstract class JobService {
     async getJobInfo(jobType: string, contents: object) {
-        const jobTypeObj = { jobType: jobType }
-        return { ...jobTypeObj, ...contents }
+        const jobTypeObj = { jobType: jobType };
+        return { ...jobTypeObj, ...contents };
     }
 }

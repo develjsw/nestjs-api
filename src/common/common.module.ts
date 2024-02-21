@@ -6,9 +6,6 @@ import { RedisCacheModule } from './cache/redis-cache.module';
 @Module({
     providers: [],
     exports: [],
-    imports: [
-        SlackModule,
-        RedisCacheModule
-    ]
+    imports: [SlackModule, RedisCacheModule]
 })
 export class CommonModule {}

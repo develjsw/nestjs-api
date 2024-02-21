@@ -14,36 +14,38 @@ export class CommonCodeService {
         private readonly commonCodeSubRepository: CommonCodeSubRepository
     ) {}
 
-  async getAllListByGroup(): Promise<any> {
-      try {
-          return await this.commonCodeSubRepository.getAllListByGroup()
-      } catch (error: any) {
-          throw new DBException(error.message);
-      }
-  }
+    async getAllListByGroup(): Promise<any> {
+        try {
+            return await this.commonCodeSubRepository.getAllListByGroup();
+        } catch (error: any) {
+            throw new DBException(error.message);
+        }
+    }
 
-  async findSubCdListByMainCd(mainCd: string) {
-      try {
-          const redisValue = await this.redisCacheService.get(
-              await this.modifyRedisKey(redisKey.inApi.common.code.main, mainCd, '{mainCd}')
-          );
+    async findSubCdListByMainCd(mainCd: string) {
+        try {
+            const redisValue = await this.redisCacheService.get(
+                await this.modifyRedisKey(redisKey.inApi.common.code.main, mainCd, '{mainCd}')
+            );
 
-          if (redisValue) {
-              return redisValue
-          } else {
-              const result = await this.commonCodeMainRepository.findSubCdListByMainCd(mainCd)
-              if (result.length) {
-                  await this.redisCacheService.set(
-                      await this.modifyRedisKey(redisKey.inApi.common.code.main, mainCd, '{mainCd}'), result, 1000 * 60
-                  );
-              }
-              return result;
-          }
-      } catch (error: any) {
-          // TODO : Error 예외처리 변경예정
-          throw new InternalServerErrorException()
-      }
-  }
+            if (redisValue) {
+                return redisValue;
+            } else {
+                const result = await this.commonCodeMainRepository.findSubCdListByMainCd(mainCd);
+                if (result.length) {
+                    await this.redisCacheService.set(
+                        await this.modifyRedisKey(redisKey.inApi.common.code.main, mainCd, '{mainCd}'),
+                        result,
+                        1000 * 60
+                    );
+                }
+                return result;
+            }
+        } catch (error: any) {
+            // TODO : Error 예외처리 변경예정
+            throw new InternalServerErrorException();
+        }
+    }
 
     async modifyRedisKey(redisKey: string, target: string, replace: any): Promise<string> {
         return redisKey.replace(replace, target);
@@ -62,5 +64,4 @@ export class CommonCodeService {
     async testGetDataOfRedis(): Promise<any> {
         return await this.redisCacheService.get('testKey');
     }
-
 }
