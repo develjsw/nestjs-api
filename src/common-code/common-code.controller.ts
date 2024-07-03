@@ -12,13 +12,19 @@ export class CommonCodeController {
 
     @Get()
     async getAllListByGroup() {
-        return this.responseService.start(await this.commonCodeService.getAllListByGroup()).responseBody;
+        return this.responseService.start(
+            await this.commonCodeService.getAllListByGroup()
+        ).responseBody;
     }
 
     @Get('/:mainCd/subCodes')
-    async findSubCdListByMainCd(@Param(new ValidationPipe()) filterCommonCodeDto: FilterCommonCodeDto) {
+    async findSubCdListByMainCd(
+        @Param(new ValidationPipe()) filterCommonCodeDto: FilterCommonCodeDto
+    ) {
         return this.responseService.start(
-            await this.commonCodeService.findSubCdListByMainCd(filterCommonCodeDto.mainCd)
+            await this.commonCodeService.findSubCdListByMainCd(
+                filterCommonCodeDto.mainCd
+            )
         ).responseBody;
     }
 
@@ -35,7 +41,8 @@ export class CommonCodeController {
      */
     @Get('/test/redis')
     async testGetDataOfRedis(): Promise<any> {
-        const getDataOfRedis = await this.commonCodeService.testGetDataOfRedis();
+        const getDataOfRedis =
+            await this.commonCodeService.testGetDataOfRedis();
         return this.responseService.start(
             getDataOfRedis
                 ? getDataOfRedis

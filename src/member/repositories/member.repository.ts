@@ -3,7 +3,11 @@ import { DataSource, Repository } from 'typeorm';
 import { Member } from '../entities/member.entity';
 import { CreateMemberDto } from '../dto/create-member.dto';
 import { ModifyMemberDto } from '../dto/modify-member.dto';
-import { DeleteResponse, InsertResponse, UpdateResponse } from '../../common/response/response.service';
+import {
+    DeleteResponse,
+    InsertResponse,
+    UpdateResponse
+} from '../../common/response/response.service';
 
 @Injectable()
 export class MemberRepository {
@@ -13,7 +17,9 @@ export class MemberRepository {
         this.memberRepository = dataSource.getRepository(Member);
     }
 
-    async createMember(createMemberDto: CreateMemberDto): Promise<InsertResponse> {
+    async createMember(
+        createMemberDto: CreateMemberDto
+    ): Promise<InsertResponse> {
         const result = await this.memberRepository.insert(createMemberDto);
         const { identifiers: memberCdList } = result;
         const memberCds = memberCdList.map((item) => {
@@ -25,7 +31,10 @@ export class MemberRepository {
         };
     }
 
-    async getMemberList(pageSize: number, skip: number): Promise<Array<Member>> {
+    async getMemberList(
+        pageSize: number,
+        skip: number
+    ): Promise<Array<Member>> {
         return await this.memberRepository.find({
             order: {
                 regDate: 'DESC'
@@ -45,8 +54,14 @@ export class MemberRepository {
         });
     }
 
-    async modifyMember(memberCd: number, modifyMemberDto: ModifyMemberDto): Promise<UpdateResponse> {
-        const modifyResult = await this.memberRepository.update(memberCd, modifyMemberDto);
+    async modifyMember(
+        memberCd: number,
+        modifyMemberDto: ModifyMemberDto
+    ): Promise<UpdateResponse> {
+        const modifyResult = await this.memberRepository.update(
+            memberCd,
+            modifyMemberDto
+        );
         const { affected } = modifyResult;
 
         return {
