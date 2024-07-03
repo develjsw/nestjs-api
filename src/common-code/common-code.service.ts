@@ -1,4 +1,8 @@
-import { Inject, Injectable, InternalServerErrorException } from '@nestjs/common';
+import {
+    Inject,
+    Injectable,
+    InternalServerErrorException
+} from '@nestjs/common';
 import { RedisCacheService } from '../common/cache/redis-cache.service';
 import { redisKey } from '../config/redis-key';
 import { CommonCodeMainRepository } from './repositories/common-code-main.repository';
@@ -25,16 +29,27 @@ export class CommonCodeService {
     async findSubCdListByMainCd(mainCd: string) {
         try {
             const redisValue = await this.redisCacheService.get(
-                await this.modifyRedisKey(redisKey.inApi.common.code.main, mainCd, '{mainCd}')
+                await this.modifyRedisKey(
+                    redisKey.inApi.common.code.main,
+                    mainCd,
+                    '{mainCd}'
+                )
             );
 
             if (redisValue) {
                 return redisValue;
             } else {
-                const result = await this.commonCodeMainRepository.findSubCdListByMainCd(mainCd);
+                const result =
+                    await this.commonCodeMainRepository.findSubCdListByMainCd(
+                        mainCd
+                    );
                 if (result.length) {
                     await this.redisCacheService.set(
-                        await this.modifyRedisKey(redisKey.inApi.common.code.main, mainCd, '{mainCd}'),
+                        await this.modifyRedisKey(
+                            redisKey.inApi.common.code.main,
+                            mainCd,
+                            '{mainCd}'
+                        ),
                         result,
                         1000 * 60
                     );
@@ -47,7 +62,11 @@ export class CommonCodeService {
         }
     }
 
-    async modifyRedisKey(redisKey: string, target: string, replace: any): Promise<string> {
+    async modifyRedisKey(
+        redisKey: string,
+        target: string,
+        replace: any
+    ): Promise<string> {
         return redisKey.replace(replace, target);
     }
 
@@ -55,7 +74,11 @@ export class CommonCodeService {
      * @deprecated - set data of redis
      */
     async testSetDataOfRedis(): Promise<void> {
-        await this.redisCacheService.set('testKey', { testValue: 'test01' }, 60000);
+        await this.redisCacheService.set(
+            'testKey',
+            { testValue: 'test01' },
+            60000
+        );
     }
 
     /**

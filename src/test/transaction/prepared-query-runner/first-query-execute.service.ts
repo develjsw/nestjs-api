@@ -29,7 +29,9 @@ export class FirstQueryExecuteService extends TransactionService {
 
         try {
             await this.firstInsertQuery(queryRunner);
-            await this.lastQueryExecuteService.setQueryRunner(queryRunner).secondInsertQuery(this.testDto);
+            await this.lastQueryExecuteService
+                .setQueryRunner(queryRunner)
+                .secondInsertQuery(this.testDto);
 
             console.log('4-1번 (commit)');
             await this.commitTransaction();
@@ -50,7 +52,9 @@ export class FirstQueryExecuteService extends TransactionService {
     async firstInsertQuery(queryRunner) {
         console.log('2번');
         try {
-            await queryRunner.manager.save(plainToInstance(Member, this.testDto));
+            await queryRunner.manager.save(
+                plainToInstance(Member, this.testDto)
+            );
             // throw new InternalServerErrorException(); // 롤백 확인용1
         } catch (error: any) {
             throw new DBException(error.message);

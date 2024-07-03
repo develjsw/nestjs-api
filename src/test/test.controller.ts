@@ -23,8 +23,12 @@ export class TestController {
     ) {}
 
     @Post('transaction/prepared-query-runner')
-    async testPreparedQueryRunner(@Body(new ValidationPipe()) testDto: TestDto) {
-        await this.firstQueryExecuteService.transactionTestForTwoInsertQuery(testDto);
+    async testPreparedQueryRunner(
+        @Body(new ValidationPipe()) testDto: TestDto
+    ) {
+        await this.firstQueryExecuteService.transactionTestForTwoInsertQuery(
+            testDto
+        );
     }
 
     @Get('extents-abstract-class')

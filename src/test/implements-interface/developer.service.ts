@@ -1,4 +1,9 @@
-import { PersonInterface, TDeveloper, TJob, TPersonInfo } from './person.interface';
+import {
+    PersonInterface,
+    TDeveloper,
+    TJob,
+    TPersonInfo
+} from './person.interface';
 
 // 인터페이스 상속
 export class DeveloperService implements PersonInterface {
