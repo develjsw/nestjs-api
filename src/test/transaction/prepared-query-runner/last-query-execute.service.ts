@@ -1,7 +1,7 @@
 import { DataSource } from 'typeorm';
 import { TestDto } from '../../dto/test.dto';
 import { plainToInstance } from 'class-transformer';
-import { Member } from '../../../member/entities/member.entity';
+import { Member } from '../../../member/entities/mysql/member.entity';
 import { DBException } from '../../../common/exception/db-exception';
 import { InternalServerErrorException } from '@nestjs/common';
 import { TransactionService } from '../../../common/transaction/transaction.service';
