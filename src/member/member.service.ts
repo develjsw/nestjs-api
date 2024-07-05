@@ -13,7 +13,7 @@ import {
 } from '../common/response/response.service';
 import { MemberRepository } from './repositories/member.repository';
 import * as moment from 'moment/moment';
-import { Member } from './entities/member.entity';
+import { Member } from './entities/mysql/member.entity';
 
 @Injectable({ scope: Scope.REQUEST })
 export class MemberService {

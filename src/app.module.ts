@@ -14,12 +14,16 @@ import { AuthModule } from './auth/auth.module';
 import { TestModule } from './test/test.module';
 
 let configuration;
-if (process.env.NODE_ENV === 'production') {
-    configuration = configurationProduction;
-} else if (process.env.NODE_ENV === 'development') {
-    configuration = configurationDevelopment;
-} else {
-    configuration = configurationLocal;
+switch (process.env.NODE_ENV) {
+    case 'production':
+        configuration = configurationProduction;
+        break;
+    case 'development':
+        configuration = configurationDevelopment;
+        break;
+    default:
+        configuration = configurationLocal;
+        break;
 }
 
 @Module({

@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { DataSource, Repository } from 'typeorm';
-import { CommonCodeSub } from '../entities/common-code-sub.entity';
-import { CommonCodeMain } from '../entities/common-code-main.entity';
+import { CommonCodeSub } from '../entities/mysql/common-code-sub.entity';
+import { CommonCodeMain } from '../entities/mysql/common-code-main.entity';
 import * as _ from 'lodash';
 
 @Injectable()

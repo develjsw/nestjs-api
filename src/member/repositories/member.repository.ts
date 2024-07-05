@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { DataSource, Repository } from 'typeorm';
-import { Member } from '../entities/member.entity';
+import { Member } from '../entities/mysql/member.entity';
 import { CreateMemberDto } from '../dto/create-member.dto';
 import { ModifyMemberDto } from '../dto/modify-member.dto';
 import {

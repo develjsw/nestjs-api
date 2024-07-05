@@ -1,6 +1,6 @@
 import { TestDto } from '../../dto/test.dto';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Member } from '../../../member/entities/member.entity';
+import { Member } from '../../../member/entities/mysql/member.entity';
 import { DataSource, Repository } from 'typeorm';
 import { DBException } from '../../../common/exception/db-exception';
 import { InternalServerErrorException } from '@nestjs/common';
