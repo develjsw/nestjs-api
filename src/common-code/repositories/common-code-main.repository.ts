@@ -2,6 +2,7 @@ import { DataSource, Repository } from 'typeorm';
 import { CommonCodeMain } from '../entities/mysql/common-code-main.entity';
 import { CommonCodeSub } from '../entities/mysql/common-code-sub.entity';
 import { Injectable } from '@nestjs/common';
+import { TCommonCode } from '../types/common-code-type';
 
 @Injectable()
 export class CommonCodeMainRepository {
@@ -12,7 +13,7 @@ export class CommonCodeMainRepository {
             this.dataSource.getRepository(CommonCodeMain);
     }
 
-    async findSubCdListByMainCd(mainCd: string) {
+    async findSubCdListByMainCd(mainCd: string): Promise<TCommonCode[]> {
         return await this.commonCodeMainRepository
             .createQueryBuilder('ccm')
             .select([
