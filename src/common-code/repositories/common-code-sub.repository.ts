@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { DataSource, Repository } from 'typeorm';
 import { CommonCodeSub } from '../entities/mysql/common-code-sub.entity';
 import { CommonCodeMain } from '../entities/mysql/common-code-main.entity';
+import { TCommonCodeGroup } from '../types/common-code-type';
 import * as _ from 'lodash';
 
 @Injectable()
@@ -13,7 +14,7 @@ export class CommonCodeSubRepository {
             this.dataSource.getRepository(CommonCodeSub);
     }
 
-    async getAllListByGroup() {
+    async getAllListByGroup(): Promise<TCommonCodeGroup> {
         const rawDataList = await this.commonCodeSubRepository
             .createQueryBuilder('ccs')
             .select([
