@@ -46,14 +46,13 @@ export class MemberService {
     async getMemberList(
         listMemberDto: ListMemberDto
     ): Promise<TResponseOfPaging> {
-        const page = Number(listMemberDto.page);
-        const pageSize = Number(listMemberDto.pageSize);
+        const page = listMemberDto.page;
+        const pageSize = listMemberDto.pageSize;
         const skip = (page - 1) * pageSize;
 
         const list = await this.memberRepository.getMemberList(pageSize, skip);
 
-        let convertList = [];
-        convertList = list.map((item) => {
+        const convertList = list.map((item: Member) => {
             return {
                 memberCd: item.memberCd,
                 memberNm: item.memberNm,
@@ -85,32 +84,29 @@ export class MemberService {
     }
 
     async findMemberByMemberCd(memberCd: number): Promise<Member | object> {
-        const result = await this.memberRepository.getMemberByCode(memberCd);
+        const detail: Member | null =
+            await this.memberRepository.getMemberByCode(memberCd);
 
-        let convertData = {};
-        if (result) {
-            convertData = {
-                memberCd: result.memberCd,
-                memberNm: result.memberNm,
-                nickName: result.nickName,
-                tel: result.tel,
-                email: result.email,
-                status: result.status,
-                regDate: result.regDate
-                    ? moment(result.regDate).format('YYYY-MM-DD HH:mm:ss')
-                    : null,
-                modDate: result.modDate
-                    ? moment(result.modDate).format('YYYY-MM-DD HH:mm:ss')
-                    : null,
-                delDate: result.delDate
-                    ? moment(result.delDate).format('YYYY-MM-DD HH:mm:ss')
-                    : null,
-                dropDate: result.dropDate
-                    ? moment(result.dropDate).format('YYYY-MM-DD HH:mm:ss')
-                    : null
-            };
+        if (!detail) {
+            return {};
         }
-        return convertData;
+
+        return {
+            ...detail,
+            // detail 내부 데이터의 일부를 converting 하는 것이므로 전개연산자를 사용하되, converting 대상만 아래와 같이 진행
+            regDate: detail.regDate
+                ? moment(detail.regDate).format('YYYY-MM-DD HH:mm:ss')
+                : null,
+            modDate: detail.modDate
+                ? moment(detail.modDate).format('YYYY-MM-DD HH:mm:ss')
+                : null,
+            delDate: detail.delDate
+                ? moment(detail.delDate).format('YYYY-MM-DD HH:mm:ss')
+                : null,
+            dropDate: detail.dropDate
+                ? moment(detail.dropDate).format('YYYY-MM-DD HH:mm:ss')
+                : null
+        };
     }
 
     async modifyMember(

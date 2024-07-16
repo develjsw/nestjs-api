@@ -31,10 +31,7 @@ export class MemberRepository {
         };
     }
 
-    async getMemberList(
-        pageSize: number,
-        skip: number
-    ): Promise<Array<Member>> {
+    async getMemberList(pageSize: number, skip: number): Promise<Member[]> {
         return await this.memberRepository.find({
             order: {
                 regDate: 'DESC'
