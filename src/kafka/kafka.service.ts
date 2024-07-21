@@ -16,8 +16,12 @@ export class KafkaService {
     constructor() {
         this.kafka = new Kafka({
             clientId: 'property-test',
-            brokers: ['localhost:9094'],
-            logLevel: logLevel.DEBUG // DEBUG 로그 레벨 설정
+            /*
+                클러스터 구성에서 설정한 broker 3개를 모두 설정 값에 추가
+                설정 값만 추가해주면 producer와 consumer가 브로커들 간에 메세지를 분산하고 소비
+            */
+            brokers: ['localhost:9094', 'localhost:9095', 'localhost:9096']
+            //logLevel: logLevel.DEBUG // DEBUG 로그 레벨 설정
         });
     }
 
@@ -30,7 +34,7 @@ export class KafkaService {
                     groupId: `my-group-${new Date().getTime()}` // 새로운 consumer group id 사용
                     groupId: 'groupId: my-group-1721278528048' // consumer group id 고정값
              */
-            groupId: 'groupId: my-group' // consumer group id 고정
+            groupId: 'my-group' // consumer group id 고정
         });
 
         try {
