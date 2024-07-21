@@ -16,8 +16,8 @@ export class KafkaService {
     constructor() {
         this.kafka = new Kafka({
             clientId: 'property-test',
-            brokers: ['localhost:9094'],
-            logLevel: logLevel.DEBUG // DEBUG 로그 레벨 설정
+            brokers: ['localhost:9094']
+            //logLevel: logLevel.DEBUG // DEBUG 로그 레벨 설정
         });
     }
 
@@ -30,7 +30,7 @@ export class KafkaService {
                     groupId: `my-group-${new Date().getTime()}` // 새로운 consumer group id 사용
                     groupId: 'groupId: my-group-1721278528048' // consumer group id 고정값
              */
-            groupId: 'groupId: my-group' // consumer group id 고정
+            groupId: 'my-group' // consumer group id 고정
         });
 
         try {
