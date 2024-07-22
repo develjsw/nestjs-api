@@ -6,11 +6,6 @@ import { ConsumerDto } from './dto/consumer.dto';
 
 @Controller('kafka')
 export class KafkaController {
-    private kafka = new Kafka({
-        clientId: "peter's kafka",
-        brokers: ['localhost:9094']
-    });
-
     constructor(private readonly kafkaService: KafkaService) {}
 
     @Post('producer')
