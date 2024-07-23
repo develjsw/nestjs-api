@@ -10,7 +10,7 @@ import {
 } from 'kafkajs';
 
 @Injectable()
-export class KafkaService {
+export class Backup_kafkaService {
     private kafka: Kafka;
 
     constructor() {
