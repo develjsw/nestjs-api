@@ -5,10 +5,16 @@ import { Member } from './entities/mysql/member.entity';
 import { ResponseService } from '../common/response/response.service';
 import { MemberService } from './member.service';
 import { MemberRepository } from './repositories/member.repository';
+import { MemberSubscribe } from './entities/mysql/member.subscribe';
 
 @Module({
     imports: [TypeOrmModule.forFeature([Member])],
     controllers: [MemberController],
-    providers: [ResponseService, MemberService, MemberRepository]
+    providers: [
+        ResponseService,
+        MemberService,
+        MemberRepository,
+        MemberSubscribe
+    ]
 })
 export class MemberModule {}

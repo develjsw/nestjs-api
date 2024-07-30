@@ -9,6 +9,10 @@ export default () => ({
             password: process.env.DATABASE_PASSWORD,
             database: process.env.DATABASE_SCHEMA,
             entities: ['dist/**/entities/mysql/*.entity{.ts,.js}'], // entity 인식
+            subscribers: ['dist/**/entities/mysql/*.subscriber{.ts,.js}'], // subscribe 인식
+            // subscribers: [
+            //     __dirname + '/../**/entities/mysql/*.subscriber{.ts,.js}'
+            // ],
             synchronize: false,
             logging: 'all'
         },
