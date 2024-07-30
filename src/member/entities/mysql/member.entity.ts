@@ -1,4 +1,5 @@
 import {
+    AfterUpdate,
     Column,
     CreateDateColumn,
     Entity,
@@ -70,4 +71,9 @@ export class Member {
         nullable: true
     })
     dropDate?: Date;
+
+    @AfterUpdate()
+    executeConsoleLog() {
+        console.log('Member 엔티티 수정될 때마다 콘솔 로그 남기기');
+    }
 }
