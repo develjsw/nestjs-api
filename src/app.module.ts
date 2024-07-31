@@ -12,7 +12,6 @@ import { MemberModule } from './member/member.module';
 import { SlackModule } from 'nestjs-slack-webhook';
 import { AuthModule } from './auth/auth.module';
 import { TestModule } from './test/test.module';
-import { KafkaModule } from './kafka/kafka.module';
 
 let configuration;
 switch (process.env.NODE_ENV) {
@@ -53,8 +52,7 @@ switch (process.env.NODE_ENV) {
         CommonCodeModule,
         MemberModule,
         AuthModule,
-        TestModule,
-        KafkaModule
+        TestModule
     ],
     /* controller */
     controllers: [AppController],
