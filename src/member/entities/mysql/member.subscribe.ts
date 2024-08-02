@@ -15,7 +15,6 @@ export class MemberSubscribe implements EntitySubscriberInterface<Member> {
 
     // 트랜잭션 시작 전
     async beforeTransactionStart(event: TransactionStartEvent): Promise<void> {
-        console.log(1231231);
         this.updateOccurred = false;
     }
 
