@@ -9,6 +9,7 @@ const responseInfoList = {
     '9905': { message: 'Duplicated Request' },
     '9906': { message: 'API Request Fail' },
     '9907': { message: 'Decrypt Fail' },
+    '9998': { message: 'Too Many Requests' },
     '9999': { message: 'Internal Server Error' }
 };
 

@@ -27,6 +27,7 @@
     "@nestjs/jwt": "^10.1.0",
     "@nestjs/mapped-types": "*",
     "@nestjs/platform-express": "^9.0.0",
+    "@nestjs/throttler": "^6.2.1",
     "@nestjs/typeorm": "^9.0.1",
     "@slack/client": "^5.0.2",
     "cache-manager": "^5.2.3",
