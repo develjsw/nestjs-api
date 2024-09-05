@@ -13,6 +13,7 @@ import { ResponseService } from '../response/response.service';
 import { inspect } from 'util';
 import { DBException } from './db-exception';
 import { ManagerException } from './manager-exception';
+import { ThrottlerException } from '@nestjs/throttler';
 
 @Catch()
 export class HttpExceptionFilter implements ExceptionFilter {
@@ -90,6 +91,8 @@ export class HttpExceptionFilter implements ExceptionFilter {
             return 9903;
         } else if (exception instanceof DBException) {
             return 9904;
+        } else if (exception instanceof ThrottlerException) {
+            return 9998;
         } else {
             return this.DEFAULT_ERROR_CODE;
         }
