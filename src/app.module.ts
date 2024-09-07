@@ -57,14 +57,6 @@ switch (process.env.NODE_ENV) {
                 configService.get('throttler')
             ]
         }),
-        // ThrottlerModule.forRoot({
-        //     throttlers: [
-        //         {
-        //             ttl: 1000,
-        //             limit: 1
-        //         }
-        //     ]
-        // }),
         CommonModule,
         CommonCodeModule,
         MemberModule,
