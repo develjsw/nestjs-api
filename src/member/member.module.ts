@@ -10,11 +10,6 @@ import { MemberSubscribe } from './entities/mysql/member.subscribe';
 @Module({
     imports: [TypeOrmModule.forFeature([Member])],
     controllers: [MemberController],
-    providers: [
-        ResponseService,
-        MemberService,
-        MemberRepository,
-        MemberSubscribe
-    ]
+    providers: [ResponseService, MemberService, MemberRepository, MemberSubscribe]
 })
 export class MemberModule {}

@@ -38,24 +38,20 @@ switch (process.env.NODE_ENV) {
         /* TypeOrm 설정 */
         TypeOrmModule.forRootAsync({
             imports: [ConfigModule],
-            useFactory: (configService: ConfigService) =>
-                configService.get('database.dbMysql'),
+            useFactory: (configService: ConfigService) => configService.get('database.dbMysql'),
             inject: [ConfigService]
         }),
         /* SlackWebHook 설정 */
         SlackModule.forRootAsync({
             imports: [ConfigModule],
             inject: [ConfigService],
-            useFactory: (configService: ConfigService) =>
-                configService.get('slack')
+            useFactory: (configService: ConfigService) => configService.get('slack')
         }),
         /* Throttler 설정 */
         ThrottlerModule.forRootAsync({
             imports: [ConfigModule],
             inject: [ConfigService],
-            useFactory: (configService: ConfigService) => [
-                configService.get('throttler')
-            ]
+            useFactory: (configService: ConfigService) => [configService.get('throttler')]
         }),
         CommonModule,
         CommonCodeModule,

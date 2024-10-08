@@ -57,11 +57,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
             ).response;
             httpStatusCode = this.getHttpStatusByException(exception);
         } else if (exception instanceof Error) {
-            responseObj = this.responseService.start(
-                undefined,
-                this.DEFAULT_ERROR_CODE,
-                exception.message
-            ).response;
+            responseObj = this.responseService.start(undefined, this.DEFAULT_ERROR_CODE, exception.message).response;
         } else if (exception instanceof DBException) {
             responseObj = this.responseService.start(
                 undefined,
@@ -69,15 +65,10 @@ export class HttpExceptionFilter implements ExceptionFilter {
                 exception.message
             ).response;
         } else {
-            responseObj = this.responseService.start(
-                undefined,
-                this.DEFAULT_ERROR_CODE
-            ).response;
+            responseObj = this.responseService.start(undefined, this.DEFAULT_ERROR_CODE).response;
         }
 
-        response
-            .status(httpStatusCode || HttpStatus.INTERNAL_SERVER_ERROR)
-            .json(responseObj.body);
+        response.status(httpStatusCode || HttpStatus.INTERNAL_SERVER_ERROR).json(responseObj.body);
     }
 
     private getCodeByException(exception: HttpException): number {

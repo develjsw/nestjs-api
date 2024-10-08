@@ -26,9 +26,7 @@ export class MemberSubscribe implements EntitySubscriberInterface<Member> {
     }
 
     // 트랜잭션 커밋 전
-    async beforeTransactionCommit(
-        event: TransactionCommitEvent
-    ): Promise<void> {
+    async beforeTransactionCommit(event: TransactionCommitEvent): Promise<void> {
         if (this.updateOccurred) {
             // TODO : 엔티티가 업데이트된 경우에만 실행할 로직
             try {
@@ -47,9 +45,7 @@ export class MemberSubscribe implements EntitySubscriberInterface<Member> {
     }
 
     // 트랜잭션 롤백 전
-    async beforeTransactionRollback(
-        event: TransactionRollbackEvent
-    ): Promise<void> {
+    async beforeTransactionRollback(event: TransactionRollbackEvent): Promise<void> {
         this.updateOccurred = false;
     }
 }

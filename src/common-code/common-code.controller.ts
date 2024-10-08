@@ -12,19 +12,13 @@ export class CommonCodeController {
 
     @Get()
     async getAllListByGroup() {
-        return this.responseService.start(
-            await this.commonCodeService.getAllListByGroup()
-        ).responseBody;
+        return this.responseService.start(this.commonCodeService.getAllListByGroup()).responseBody;
     }
 
     @Get('/:mainCd/subCodes')
-    async findSubCdListByMainCd(
-        @Param(new ValidationPipe()) filterCommonCodeDto: FilterCommonCodeDto
-    ) {
+    async findSubCdListByMainCd(@Param(new ValidationPipe()) filterCommonCodeDto: FilterCommonCodeDto) {
         return this.responseService.start(
-            await this.commonCodeService.findSubCdListByMainCd(
-                filterCommonCodeDto.mainCd
-            )
+            await this.commonCodeService.findSubCdListByMainCd(filterCommonCodeDto.mainCd)
         ).responseBody;
     }
 }
