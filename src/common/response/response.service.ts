@@ -49,8 +49,7 @@ type TInsertResult = {
 export type InsertResponse = TInsertResult;
 
 const makeResponseInfo = (code: number): TResponseInfo => {
-    const responseInfoObj =
-        responseInfoList[code.toString().padStart(4, '0')] || null;
+    const responseInfoObj = responseInfoList[code.toString().padStart(4, '0')] || null;
 
     if (!responseInfoObj) {
         throw new Error('empty code:' + code);

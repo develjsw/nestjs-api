@@ -3,11 +3,7 @@ import { DataSource, Repository } from 'typeorm';
 import { Member } from '../entities/mysql/member.entity';
 import { CreateMemberDto } from '../dto/create-member.dto';
 import { ModifyMemberDto } from '../dto/modify-member.dto';
-import {
-    DeleteResponse,
-    InsertResponse,
-    UpdateResponse
-} from '../../common/response/response.service';
+import { DeleteResponse, InsertResponse, UpdateResponse } from '../../common/response/response.service';
 import { DeleteResult } from 'typeorm/query-builder/result/DeleteResult';
 import { UpdateResult } from 'typeorm/query-builder/result/UpdateResult';
 import { InsertResult } from 'typeorm/query-builder/result/InsertResult';
@@ -20,12 +16,8 @@ export class MemberRepository {
         this.memberRepository = dataSource.getRepository(Member);
     }
 
-    async createMember(
-        createMemberDto: CreateMemberDto
-    ): Promise<InsertResponse> {
-        const result: InsertResult = await this.memberRepository.insert(
-            createMemberDto
-        );
+    async createMember(createMemberDto: CreateMemberDto): Promise<InsertResponse> {
+        const result: InsertResult = await this.memberRepository.insert(createMemberDto);
         const { identifiers: memberCdList } = result;
         const memberCds = memberCdList.map((item) => item.memberCd);
 
@@ -34,7 +26,7 @@ export class MemberRepository {
         };
     }
 
-    async getMemberList(pageSize: number, skip: number): Promise<Member[]> {
+    async getMembersWithPaging(pageSize: number, skip: number): Promise<Member[]> {
         return await this.memberRepository.find({
             order: {
                 regDate: 'DESC'
@@ -44,7 +36,7 @@ export class MemberRepository {
         });
     }
 
-    async getMemberListCount(): Promise<number> {
+    async getCountMembers(): Promise<number> {
         return await this.memberRepository.count();
     }
 
@@ -54,14 +46,8 @@ export class MemberRepository {
         });
     }
 
-    async modifyMember(
-        memberCd: number,
-        modifyMemberDto: ModifyMemberDto
-    ): Promise<UpdateResponse> {
-        const modifyResult: UpdateResult = await this.memberRepository.update(
-            memberCd,
-            modifyMemberDto
-        );
+    async updateMemberById(memberCd: number, modifyMemberDto: ModifyMemberDto): Promise<UpdateResponse> {
+        const modifyResult: UpdateResult = await this.memberRepository.update(memberCd, modifyMemberDto);
         const { affected } = modifyResult;
 
         return {
@@ -70,10 +56,8 @@ export class MemberRepository {
         };
     }
 
-    async removeMember(memberCd: number): Promise<DeleteResponse> {
-        const removeResult: DeleteResult = await this.memberRepository.delete(
-            memberCd
-        );
+    async deleteMemberById(memberCd: number): Promise<DeleteResponse> {
+        const removeResult: DeleteResult = await this.memberRepository.delete(memberCd);
         const { affected } = removeResult;
 
         return {

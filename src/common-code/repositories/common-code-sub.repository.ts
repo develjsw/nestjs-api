@@ -10,8 +10,7 @@ export class CommonCodeSubRepository {
     private commonCodeSubRepository: Repository<CommonCodeSub>;
 
     constructor(private readonly dataSource: DataSource) {
-        this.commonCodeSubRepository =
-            this.dataSource.getRepository(CommonCodeSub);
+        this.commonCodeSubRepository = this.dataSource.getRepository(CommonCodeSub);
     }
 
     async getAllListByGroup(): Promise<TCommonCodeGroup> {

@@ -4,10 +4,7 @@ import { Cache } from 'cache-manager';
 
 @Injectable()
 export class RedisCacheService {
-    constructor(
-        @Inject(CACHE_MANAGER)
-        private cacheManager: Cache
-    ) {}
+    constructor(@Inject(CACHE_MANAGER) private cacheManager: Cache) {}
 
     /**
      * 캐시 가져오기

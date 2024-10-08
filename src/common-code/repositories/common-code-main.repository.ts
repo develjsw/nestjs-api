@@ -9,11 +9,10 @@ export class CommonCodeMainRepository {
     private commonCodeMainRepository: Repository<CommonCodeMain>;
 
     constructor(private readonly dataSource: DataSource) {
-        this.commonCodeMainRepository =
-            this.dataSource.getRepository(CommonCodeMain);
+        this.commonCodeMainRepository = this.dataSource.getRepository(CommonCodeMain);
     }
 
-    async findSubCdListByMainCd(mainCd: string): Promise<TCommonCode[]> {
+    async getSubCdsByMainCd(mainCd: string): Promise<TCommonCode[]> {
         return await this.commonCodeMainRepository
             .createQueryBuilder('ccm')
             .select([

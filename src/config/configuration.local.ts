@@ -28,14 +28,11 @@ export default () => ({
     throttler: {
         ttl: 1000,
         limit: 5
-    }
-    /*
-    -- 로컬/개발/운영 공통으로 사용되기 때문에 분리 할 필요는 없다고 판단 --
+    },
     bitly: {
         api: {
             accessToken: process.env.BITLY_SHORT_URL_ACCESS_TOKEN,
             url: process.env.BITLY_SHORT_URL_API
         }
     }
-    */
 });
