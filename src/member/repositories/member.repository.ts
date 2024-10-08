@@ -26,13 +26,13 @@ export class MemberRepository {
         };
     }
 
-    async getMemberList(pageSize: number, skip: number): Promise<Member[]> {
+    async getMemberList(page_size: number, skip: number): Promise<Member[]> {
         return await this.memberRepository.find({
             order: {
                 regDate: 'DESC'
             },
             skip: skip,
-            take: pageSize
+            take: page_size
         });
     }
 

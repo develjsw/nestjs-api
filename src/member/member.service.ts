@@ -39,17 +39,17 @@ export class MemberService {
         const pageSize = listMemberDto.pageSize;
         const skip = (page - 1) * pageSize;
 
-        const list = await this.memberRepository.getMemberList(pageSize, skip);
+        const members: Member[] = await this.memberRepository.getMemberList(pageSize, skip);
 
         const totalCount = await this.memberRepository.getMemberListCount();
 
         return {
             pagingInfo: { page, totalCount },
-            list
+            list: members
         };
     }
 
-    async findMemberByMemberCd(memberCd: number): Promise<Member | object> {
+    async findMemberByMemberCd(memberCd: number): Promise<Member> {
         const detail: Member | null = await this.memberRepository.getMemberByCode(memberCd);
 
         if (!detail) {

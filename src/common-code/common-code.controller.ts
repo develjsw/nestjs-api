@@ -1,9 +1,9 @@
-import { Controller, Get, Param, Post, ValidationPipe } from '@nestjs/common';
+import { Controller, Get, Param } from '@nestjs/common';
 import { ResponseService } from '../common/response/response.service';
 import { CommonCodeService } from './common-code.service';
-import { FilterCommonCodeDto } from './dto/filter-common-code.dto';
+import { TCommonCode, TCommonCodeGroup } from './types/common-code-type';
 
-@Controller('commonCode')
+@Controller('common-codes')
 export class CommonCodeController {
     constructor(
         private readonly responseService: ResponseService,
@@ -12,13 +12,15 @@ export class CommonCodeController {
 
     @Get()
     async getAllListByGroup() {
-        return this.responseService.start(this.commonCodeService.getAllListByGroup()).responseBody;
+        const result: TCommonCodeGroup = await this.commonCodeService.getAllListByGroup();
+
+        return this.responseService.start(result).responseBody;
     }
 
-    @Get('/:mainCd/subCodes')
-    async findSubCdListByMainCd(@Param(new ValidationPipe()) filterCommonCodeDto: FilterCommonCodeDto) {
-        return this.responseService.start(
-            await this.commonCodeService.findSubCdListByMainCd(filterCommonCodeDto.mainCd)
-        ).responseBody;
+    @Get('/:id/sub-codes')
+    async findSubCdListByMainCd(@Param('id') main_cd: string) {
+        const result: TCommonCode[] = await this.commonCodeService.findSubCdListByMainCd(main_cd);
+
+        return this.responseService.start(result).responseBody;
     }
 }
