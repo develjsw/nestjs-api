@@ -30,29 +30,32 @@ export class MemberController {
     }
 
     @Get()
-    async getMemberList(@Query(new ValidationPipe()) dto: ListMemberDto) {
-        const result: TResponseOfPaging = await this.memberService.getMemberList(dto);
+    async getMembersWithPaging(@Query(new ValidationPipe()) dto: ListMemberDto) {
+        const result: TResponseOfPaging = await this.memberService.getMembersWithPaging(dto);
 
         return this.responseService.start(result).responseBody;
     }
 
     @Get(':id')
-    async findMemberByMemberCd(@Param('id', ParseIntPipe) member_cd: number) {
-        const result: Member = await this.memberService.findMemberByMemberCd(member_cd);
+    async getMemberById(@Param('id', ParseIntPipe) member_cd: number) {
+        const result: Member = await this.memberService.getMemberById(member_cd);
 
         return this.responseService.start(result).responseBody;
     }
 
     @Patch(':id')
-    async modifyMember(@Param('id', ParseIntPipe) member_cd: number, @Body(new ValidationPipe()) dto: ModifyMemberDto) {
-        const result: UpdateResponse = await this.memberService.modifyMember(member_cd, dto);
+    async updateMemberById(
+        @Param('id', ParseIntPipe) member_cd: number,
+        @Body(new ValidationPipe()) dto: ModifyMemberDto
+    ) {
+        const result: UpdateResponse = await this.memberService.updateMemberById(member_cd, dto);
 
         return this.responseService.start(result).responseBody;
     }
 
     @Delete(':id')
-    async removeMember(@Param('id', ParseIntPipe) member_cd: number) {
-        const result: DeleteResponse = await this.memberService.removeMember(member_cd);
+    async deleteMemberById(@Param('id', ParseIntPipe) member_cd: number) {
+        const result: DeleteResponse = await this.memberService.deleteMemberById(member_cd);
 
         return this.responseService.start(result).responseBody;
     }

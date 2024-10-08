@@ -26,17 +26,17 @@ export class MemberRepository {
         };
     }
 
-    async getMemberList(page_size: number, skip: number): Promise<Member[]> {
+    async getMembersWithPaging(pageSize: number, skip: number): Promise<Member[]> {
         return await this.memberRepository.find({
             order: {
                 regDate: 'DESC'
             },
             skip: skip,
-            take: page_size
+            take: pageSize
         });
     }
 
-    async getMemberListCount(): Promise<number> {
+    async getCountMembers(): Promise<number> {
         return await this.memberRepository.count();
     }
 
@@ -46,7 +46,7 @@ export class MemberRepository {
         });
     }
 
-    async modifyMember(memberCd: number, modifyMemberDto: ModifyMemberDto): Promise<UpdateResponse> {
+    async updateMemberById(memberCd: number, modifyMemberDto: ModifyMemberDto): Promise<UpdateResponse> {
         const modifyResult: UpdateResult = await this.memberRepository.update(memberCd, modifyMemberDto);
         const { affected } = modifyResult;
 
@@ -56,7 +56,7 @@ export class MemberRepository {
         };
     }
 
-    async removeMember(memberCd: number): Promise<DeleteResponse> {
+    async deleteMemberById(memberCd: number): Promise<DeleteResponse> {
         const removeResult: DeleteResult = await this.memberRepository.delete(memberCd);
         const { affected } = removeResult;
 

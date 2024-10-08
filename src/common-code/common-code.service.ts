@@ -23,17 +23,17 @@ export class CommonCodeService {
         }
     }
 
-    async findSubCdListByMainCd(mainCd: string): Promise<TCommonCode[]> {
+    async getSubCdsByMainCd(mainCd: string): Promise<TCommonCode[]> {
         try {
-            const redisValue = await this.redisCacheService.get(
+            const cacheData = await this.redisCacheService.get(
                 await this.modifyRedisKey(redisKey.inApi.common.code.main, mainCd, '{mainCd}')
             );
 
-            if (redisValue) {
-                return redisValue;
+            if (cacheData) {
+                return cacheData;
             }
 
-            const result: TCommonCode[] = await this.commonCodeMainRepository.findSubCdListByMainCd(mainCd);
+            const result: TCommonCode[] = await this.commonCodeMainRepository.getSubCdsByMainCd(mainCd);
 
             if (result.length) {
                 await this.redisCacheService.set(

@@ -18,8 +18,8 @@ export class CommonCodeController {
     }
 
     @Get('/:id/sub-codes')
-    async findSubCdListByMainCd(@Param('id') main_cd: string) {
-        const result: TCommonCode[] = await this.commonCodeService.findSubCdListByMainCd(main_cd);
+    async getSubCdsByMainCd(@Param('id') main_cd: string) {
+        const result: TCommonCode[] = await this.commonCodeService.getSubCdsByMainCd(main_cd);
 
         return this.responseService.start(result).responseBody;
     }

@@ -22,8 +22,8 @@ export class MemberService {
         this.nowDate = new Date();
     }
 
-    async createMember(createMemberDto: CreateMemberDto): Promise<InsertResponse> {
-        const memberDto = plainToClass(CreateMemberDto, createMemberDto);
+    async createMember(dto: CreateMemberDto): Promise<InsertResponse> {
+        const memberDto = plainToClass(CreateMemberDto, dto);
         memberDto.regDate = this.nowDate;
 
         try {
@@ -34,14 +34,18 @@ export class MemberService {
         }
     }
 
-    async getMemberList(listMemberDto: ListMemberDto): Promise<TResponseOfPaging> {
-        const page = listMemberDto.page;
-        const pageSize = listMemberDto.pageSize;
-        const skip = (page - 1) * pageSize;
+    async getMembersWithPaging(dto: ListMemberDto): Promise<TResponseOfPaging> {
+        const page: number = dto.page;
+        const pageSize: number = dto.pageSize;
+        const skip: number = (page - 1) * pageSize;
 
-        const members: Member[] = await this.memberRepository.getMemberList(pageSize, skip);
+        const totalCount: number = await this.memberRepository.getCountMembers();
 
-        const totalCount = await this.memberRepository.getMemberListCount();
+        if (!totalCount) {
+            throw new ManagerException(9902, 'not found - member list');
+        }
+
+        const members: Member[] = await this.memberRepository.getMembersWithPaging(pageSize, skip);
 
         return {
             pagingInfo: { page, totalCount },
@@ -49,7 +53,7 @@ export class MemberService {
         };
     }
 
-    async findMemberByMemberCd(memberCd: number): Promise<Member> {
+    async getMemberById(memberCd: number): Promise<Member> {
         const detail: Member | null = await this.memberRepository.getMemberByCode(memberCd);
 
         if (!detail) {
@@ -59,22 +63,21 @@ export class MemberService {
         return detail;
     }
 
-    async modifyMember(memberCd: number, modifyMemberDto: ModifyMemberDto): Promise<UpdateResponse> {
-        const memberDto = plainToClass(ModifyMemberDto, modifyMemberDto);
+    async updateMemberById(memberCd: number, dto: ModifyMemberDto): Promise<UpdateResponse> {
+        const memberDto = plainToClass(ModifyMemberDto, dto);
         memberDto.modDate = this.nowDate;
 
         try {
-            return await this.memberRepository.modifyMember(memberCd, memberDto);
+            return await this.memberRepository.updateMemberById(memberCd, memberDto);
         } catch (error) {
             await this.slackService.send(`회원 수정 도중 에러 발생! - ${error}`);
             throw new DBException(error.message);
         }
     }
 
-    // Hard Delete
-    async removeMember(memberCd: number): Promise<DeleteResponse> {
+    async deleteMemberById(memberCd: number): Promise<DeleteResponse> {
         try {
-            return await this.memberRepository.removeMember(memberCd);
+            return await this.memberRepository.deleteMemberById(memberCd);
         } catch (error) {
             await this.slackService.send(`회원 삭제 도중 에러 발생! - ${error}`);
             throw new DBException(error.message);
