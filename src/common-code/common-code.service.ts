@@ -72,22 +72,4 @@ export class CommonCodeService {
     ): Promise<string> {
         return redisKey.replace(replace, target);
     }
-
-    /**
-     * @deprecated - set data of redis
-     */
-    async testSetDataOfRedis(): Promise<void> {
-        await this.redisCacheService.set(
-            'testKey',
-            { testValue: 'test01' },
-            60000
-        );
-    }
-
-    /**
-     * @deprecated - get data of redis
-     */
-    async testGetDataOfRedis(): Promise<any> {
-        return await this.redisCacheService.get('testKey');
-    }
 }
