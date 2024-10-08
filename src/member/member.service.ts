@@ -7,8 +7,8 @@ import { ListMemberDto } from './dto/list-member.dto';
 import { SlackService } from '../common/slack/slack.service';
 import { InsertResponse, UpdateResponse, DeleteResponse, TResponseOfPaging } from '../common/response/response.service';
 import { MemberRepository } from './repositories/member.repository';
-import * as moment from 'moment/moment';
 import { Member } from './entities/mysql/member.entity';
+import { ManagerException } from '../common/exception/manager-exception';
 
 @Injectable({ scope: Scope.REQUEST })
 export class MemberService {
@@ -41,26 +41,11 @@ export class MemberService {
 
         const list = await this.memberRepository.getMemberList(pageSize, skip);
 
-        const convertList = list.map((item: Member) => {
-            return {
-                memberCd: item.memberCd,
-                memberNm: item.memberNm,
-                nickName: item.nickName,
-                tel: item.tel,
-                email: item.email,
-                status: item.status,
-                regDate: item.regDate ? moment(item.regDate).format('YYYY-MM-DD HH:mm:ss') : null,
-                modDate: item.modDate ? moment(item.modDate).format('YYYY-MM-DD HH:mm:ss') : null,
-                delDate: item.delDate ? moment(item.delDate).format('YYYY-MM-DD HH:mm:ss') : null,
-                dropDate: item.dropDate ? moment(item.dropDate).format('YYYY-MM-DD HH:mm:ss') : null
-            };
-        });
-
         const totalCount = await this.memberRepository.getMemberListCount();
 
         return {
             pagingInfo: { page, totalCount },
-            list: convertList
+            list
         };
     }
 
@@ -68,17 +53,10 @@ export class MemberService {
         const detail: Member | null = await this.memberRepository.getMemberByCode(memberCd);
 
         if (!detail) {
-            return {};
+            throw new ManagerException(9902, 'not found - member detail');
         }
 
-        return {
-            ...detail,
-            // detail 내부 데이터의 일부를 converting 하는 것이므로 전개연산자를 사용하되, converting 대상만 아래와 같이 진행
-            regDate: detail.regDate ? moment(detail.regDate).format('YYYY-MM-DD HH:mm:ss') : null,
-            modDate: detail.modDate ? moment(detail.modDate).format('YYYY-MM-DD HH:mm:ss') : null,
-            delDate: detail.delDate ? moment(detail.delDate).format('YYYY-MM-DD HH:mm:ss') : null,
-            dropDate: detail.dropDate ? moment(detail.dropDate).format('YYYY-MM-DD HH:mm:ss') : null
-        };
+        return detail;
     }
 
     async modifyMember(memberCd: number, modifyMemberDto: ModifyMemberDto): Promise<UpdateResponse> {
