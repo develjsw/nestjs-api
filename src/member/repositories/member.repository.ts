@@ -46,8 +46,8 @@ export class MemberRepository {
         });
     }
 
-    async updateMemberById(memberCd: number, modifyMemberDto: ModifyMemberDto): Promise<UpdateResponse> {
-        const modifyResult: UpdateResult = await this.memberRepository.update(memberCd, modifyMemberDto);
+    async updateMemberById(memberCd: number, dto: ModifyMemberDto): Promise<UpdateResponse> {
+        const modifyResult: UpdateResult = await this.memberRepository.update(memberCd, dto);
         const { affected } = modifyResult;
 
         return {
