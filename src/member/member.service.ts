@@ -42,7 +42,7 @@ export class MemberService {
         const totalCount: number = await this.memberRepository.getCountMembers();
 
         if (!totalCount) {
-            throw new ManagerException(9902, 'not found - member list');
+            throw new ManagerException(9902, 'Not Found - Members');
         }
 
         const members: Member[] = await this.memberRepository.getMembersWithPaging(pageSize, skip);
@@ -57,7 +57,7 @@ export class MemberService {
         const detail: Member | null = await this.memberRepository.getMemberByCode(memberCd);
 
         if (!detail) {
-            throw new ManagerException(9902, 'not found - member detail');
+            throw new ManagerException(9902, 'Not Found - Member');
         }
 
         return detail;

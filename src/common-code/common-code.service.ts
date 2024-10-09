@@ -2,55 +2,51 @@ import { Inject, Injectable, InternalServerErrorException } from '@nestjs/common
 import { RedisCacheService } from '../common/cache/redis-cache.service';
 import { redisKey } from '../config/redis-key';
 import { CommonCodeMainRepository } from './repositories/common-code-main.repository';
-import { CommonCodeSubRepository } from './repositories/common-code-sub.repository';
-import { DBException } from '../common/exception/db-exception';
-import { TCommonCode, TCommonCodeGroup } from './types/common-code-type';
+import { CommonCodeMain } from './entities/mysql/common-code-main.entity';
+import { ManagerException } from '../common/exception/manager-exception';
+import { ChangeFormatService } from '../common/helper/change-format.service';
 
 @Injectable()
 export class CommonCodeService {
     constructor(
         @Inject(RedisCacheService)
         private redisCacheService: RedisCacheService,
-        private readonly commonCodeMainRepository: CommonCodeMainRepository,
-        private readonly commonCodeSubRepository: CommonCodeSubRepository
+        private readonly changeFormatService: ChangeFormatService,
+        private readonly commonCodeMainRepository: CommonCodeMainRepository
     ) {}
 
-    async getAllListByGroup(): Promise<TCommonCodeGroup> {
-        try {
-            return await this.commonCodeSubRepository.getAllListByGroup();
-        } catch (error: any) {
-            throw new DBException(error.message);
+    async getCommonCodeMainAndSub(): Promise<CommonCodeMain[]> {
+        const result: CommonCodeMain[] = await this.commonCodeMainRepository.getCommonCodeMainAndSub();
+
+        if (!result.length) {
+            throw new ManagerException(9902, 'Not Found - CommonCodeMains');
         }
+
+        return result;
     }
 
-    async getSubCdsByMainCd(mainCd: string): Promise<TCommonCode[]> {
+    async getCommonCodeMainById(mainCd: string): Promise<CommonCodeMain[]> {
+        const key = await this.changeFormatService.changeFormatOfRedisKey(
+            redisKey.inApi.common.code.main,
+            [mainCd],
+            ['{mainCd}']
+        );
+        const cacheData = await this.redisCacheService.get(key);
+
+        if (cacheData) {
+            return cacheData;
+        }
+
         try {
-            const cacheData = await this.redisCacheService.get(
-                await this.modifyRedisKey(redisKey.inApi.common.code.main, mainCd, '{mainCd}')
-            );
-
-            if (cacheData) {
-                return cacheData;
-            }
-
-            const result: TCommonCode[] = await this.commonCodeMainRepository.getSubCdsByMainCd(mainCd);
+            const result: CommonCodeMain[] = await this.commonCodeMainRepository.getCommonCodeMainAndSubById(mainCd);
 
             if (result.length) {
-                await this.redisCacheService.set(
-                    await this.modifyRedisKey(redisKey.inApi.common.code.main, mainCd, '{mainCd}'),
-                    result,
-                    1000 * 60
-                );
+                await this.redisCacheService.set(key, result, 1000 * 60);
             }
 
             return result;
-        } catch (error: any) {
-            // TODO : Error 예외처리 변경예정
-            throw new InternalServerErrorException();
+        } catch (error) {
+            throw new InternalServerErrorException('Error - Fetching CommonCodeMains');
         }
-    }
-
-    async modifyRedisKey(redisKey: string, target: string, replace: any): Promise<string> {
-        return redisKey.replace(replace, target);
     }
 }

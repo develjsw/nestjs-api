@@ -49,7 +49,7 @@ export class CommonCodeSub {
     })
     delDate?: Date;
 
-    @ManyToOne(() => CommonCodeMain, (main) => main.mainCd)
+    @ManyToOne(() => CommonCodeMain, (main) => main.commonCodeSubs)
     @JoinColumn({
         name: 'MAIN_CD'
     })
