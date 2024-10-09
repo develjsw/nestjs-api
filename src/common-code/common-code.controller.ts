@@ -1,7 +1,7 @@
 import { Controller, Get, Param } from '@nestjs/common';
 import { ResponseService } from '../common/response/response.service';
 import { CommonCodeService } from './common-code.service';
-import { TCommonCode, TCommonCodeGroup } from './types/common-code-type';
+import { CommonCodeMain } from './entities/mysql/common-code-main.entity';
 
 @Controller('common-codes')
 export class CommonCodeController {
@@ -11,15 +11,15 @@ export class CommonCodeController {
     ) {}
 
     @Get()
-    async getAllListByGroup() {
-        const result: TCommonCodeGroup = await this.commonCodeService.getAllListByGroup();
+    async getCommonCodeMainAndSub() {
+        const result: CommonCodeMain[] = await this.commonCodeService.getCommonCodeMainAndSub();
 
         return this.responseService.start(result).responseBody;
     }
 
     @Get('/:id/sub-codes')
-    async getSubCdsByMainCd(@Param('id') main_cd: string) {
-        const result: TCommonCode[] = await this.commonCodeService.getSubCdsByMainCd(main_cd);
+    async getCommonCodeMainById(@Param('id') main_cd: string) {
+        const result: CommonCodeMain[] = await this.commonCodeService.getCommonCodeMainById(main_cd);
 
         return this.responseService.start(result).responseBody;
     }

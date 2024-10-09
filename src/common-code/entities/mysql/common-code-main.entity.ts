@@ -40,9 +40,6 @@ export class CommonCodeMain {
     })
     delDate?: Date;
 
-    @OneToMany(() => CommonCodeSub, (sub) => sub.mainCd)
-    @JoinColumn({
-        name: 'MAIN_CD'
-    })
-    commonCodeSubs!: CommonCodeSub[];
+    @OneToMany(() => CommonCodeSub, (sub) => sub.commonCodeMain)
+    commonCodeSubs: CommonCodeSub[];
 }

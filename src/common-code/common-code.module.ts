@@ -1,16 +1,13 @@
 import { Module } from '@nestjs/common';
 import { CommonCodeService } from './common-code.service';
 import { CommonCodeController } from './common-code.controller';
-import { CommonCodeMain } from './entities/mysql/common-code-main.entity';
-import { CommonCodeSub } from './entities/mysql/common-code-sub.entity';
-import { TypeOrmModule } from '@nestjs/typeorm';
 import { ResponseService } from '../common/response/response.service';
 import { CommonCodeMainRepository } from './repositories/common-code-main.repository';
-import { CommonCodeSubRepository } from './repositories/common-code-sub.repository';
+import { CommonModule } from '../common/common.module';
 
 @Module({
-    imports: [TypeOrmModule.forFeature([CommonCodeMain, CommonCodeSub])],
+    imports: [CommonModule],
     controllers: [CommonCodeController],
-    providers: [ResponseService, CommonCodeService, CommonCodeMainRepository, CommonCodeSubRepository]
+    providers: [ResponseService, CommonCodeService, CommonCodeMainRepository]
 })
 export class CommonCodeModule {}
