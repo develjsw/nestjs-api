@@ -1,4 +1,4 @@
-import { Column, Entity, OneToMany, PrimaryColumn, JoinColumn } from 'typeorm';
+import { Column, Entity, OneToMany, PrimaryColumn } from 'typeorm';
 import { CommonCodeSub } from './common-code-sub.entity';
 
 @Entity('TB_COMMON_CODE_MAIN') // 실제 테이블명
@@ -13,7 +13,6 @@ export class CommonCodeMain {
     })
     mainNm: string;
 
-    // TODO : ENUM으로 변경 예정
     @Column('varchar', {
         name: 'IS_USE'
     })

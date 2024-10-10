@@ -28,7 +28,6 @@ export class CommonCodeSub {
     })
     sortNo: number;
 
-    // TODO : ENUM으로 변경 예정
     @Column('varchar', {
         name: 'IS_USE'
     })
