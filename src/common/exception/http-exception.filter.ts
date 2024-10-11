@@ -49,29 +49,45 @@ export class HttpExceptionFilter implements ExceptionFilter {
         let httpStatusCode: number;
         let responseObj;
 
+        // HttpException 처리
         if (exception instanceof HttpException) {
-            responseObj = this.responseService.start(
-                undefined,
-                this.getCodeByException(exception),
-                exception.message
-            ).response;
+            const exceptionResponse = exception.getResponse();
+            const message = this.extractMessage(exceptionResponse);
+
+            responseObj = this.responseService.start(undefined, this.getCodeByException(exception), message).response;
+
             httpStatusCode = this.getHttpStatusByException(exception);
-        } else if (exception instanceof Error) {
-            responseObj = this.responseService.start(undefined, this.DEFAULT_ERROR_CODE, exception.message).response;
-        } else if (exception instanceof DBException) {
-            responseObj = this.responseService.start(
-                undefined,
-                this.getCodeByException(exception),
-                exception.message
-            ).response;
-        } else {
+        }
+        // DBException, Error 처리
+        else if (exception instanceof DBException || exception instanceof Error) {
+            const message = exception.message || 'Internal server error';
+            responseObj = this.responseService.start(undefined, this.getCodeByException(exception), message).response;
+            httpStatusCode = HttpStatus.INTERNAL_SERVER_ERROR;
+        }
+        // 그 외의 예외 처리
+        else {
             responseObj = this.responseService.start(undefined, this.DEFAULT_ERROR_CODE).response;
+            httpStatusCode = HttpStatus.INTERNAL_SERVER_ERROR;
         }
 
-        response.status(httpStatusCode || HttpStatus.INTERNAL_SERVER_ERROR).json(responseObj.body);
+        response.status(httpStatusCode).json(responseObj.body);
     }
 
-    private getCodeByException(exception: HttpException): number {
+    private extractMessage(exceptionResponse: any): string {
+        // 문자열인 경우 그대로 반환
+        if (typeof exceptionResponse === 'string') {
+            return exceptionResponse;
+        }
+        // 객체인 경우 JSON 문자열로 변환하거나 기본 메시지를 반환
+        if (typeof exceptionResponse === 'object' && exceptionResponse.message) {
+            return Array.isArray(exceptionResponse.message)
+                ? exceptionResponse.message.join(', ') // 배열인 경우 메시지를 결합하여 반환
+                : exceptionResponse.message;
+        }
+        return 'An error occurred';
+    }
+
+    private getCodeByException(exception: any): number {
         if (exception instanceof ManagerException) {
             return exception.code;
         } else if (exception instanceof NotFoundException) {
