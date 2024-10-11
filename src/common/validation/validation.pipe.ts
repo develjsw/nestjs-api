@@ -5,35 +5,27 @@ import { plainToInstance } from 'class-transformer';
 @Injectable()
 export class ValidationPipe implements PipeTransform<any> {
     async transform(value: any, { metatype }: ArgumentMetadata) {
-        if (!metatype || !this.toValidate(metatype)) {
+        if (!metatype || !this.shouldValidate(metatype)) {
             return value;
         }
+
         const object = plainToInstance(metatype, value);
         const errors = await validate(object);
 
         if (errors.length > 0) {
-            const validateMessage = this.validateMassage(errors);
-            throw new BadRequestException(validateMessage);
+            const errorMessages = this.extractErrorMessages(errors);
+            throw new BadRequestException(errorMessages);
         }
+
         return value;
     }
 
-    private toValidate(metatype: Function): boolean {
-        const types: Function[] = [String, Boolean, Number, Array, Object];
-        return !types.includes(metatype);
+    private shouldValidate(metatype: any): boolean {
+        const noValidationNeeded: Function[] = [String, Boolean, Number, Array, Object];
+        return !noValidationNeeded.includes(metatype);
     }
 
-    private validateMassage(errors: ValidationError[]): Array<string> {
-        const errorMessages = [];
-
-        for (let i = 0; i < errors.length; i++) {
-            if (errors[i].hasOwnProperty('constraints')) {
-                const errorMsg = Object.values(errors[i].constraints);
-                for (let k = 0; k < errorMsg.length; k++) {
-                    errorMessages.push(errorMsg[k]);
-                }
-            }
-        }
-        return errorMessages;
+    private extractErrorMessages(errors: ValidationError[]): string[] {
+        return errors.flatMap((error) => Object.values(error.constraints || {}));
     }
 }

@@ -31,7 +31,7 @@ export class MemberController {
 
     @Get()
     async getMembersWithPaging(@Query(new ValidationPipe()) dto: ListMemberDto) {
-        const result: TResponseOfPaging = await this.memberService.getMembersWithPaging(dto);
+        const result: TResponseOfPaging<Member> = await this.memberService.getMembersWithPaging(dto);
 
         return this.responseService.start(result).responseBody;
     }

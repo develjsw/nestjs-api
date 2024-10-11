@@ -34,7 +34,7 @@ export class MemberService {
         }
     }
 
-    async getMembersWithPaging(dto: ListMemberDto): Promise<TResponseOfPaging> {
+    async getMembersWithPaging(dto: ListMemberDto): Promise<TResponseOfPaging<Member>> {
         const page: number = dto.page;
         const pageSize: number = dto.pageSize;
         const skip: number = (page - 1) * pageSize;
