@@ -26,12 +26,12 @@ export type TResponse = {
     };
 };
 
-export type TResponseOfPaging = {
+export type TResponseOfPaging<T> = {
     pagingInfo: {
         page: number;
         totalCount: number;
     };
-    list: any[];
+    list: T[];
 };
 
 interface TypeOrmOperationResult {
