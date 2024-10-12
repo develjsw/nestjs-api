@@ -34,13 +34,10 @@ export type TResponseOfPaging<T> = {
     list: T[];
 };
 
-interface TypeOrmOperationResult {
-    affected: number;
-}
-export interface UpdateResponse extends TypeOrmOperationResult {
+export interface UpdateResponse {
     [primaryKeyName: string]: number; // ex) memberCd: number
 }
-export interface DeleteResponse extends TypeOrmOperationResult {
+export interface DeleteResponse {
     [primaryKeyName: string]: number; // ex) memberCd: number
 }
 type TInsertResult = {
