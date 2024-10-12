@@ -7,6 +7,7 @@ import { DeleteResponse, InsertResponse, UpdateResponse } from '../../common/res
 import { DeleteResult } from 'typeorm/query-builder/result/DeleteResult';
 import { UpdateResult } from 'typeorm/query-builder/result/UpdateResult';
 import { InsertResult } from 'typeorm/query-builder/result/InsertResult';
+import { DBException } from '../../common/exception/db-exception';
 
 @Injectable()
 export class MemberRepository {
@@ -47,22 +48,28 @@ export class MemberRepository {
     }
 
     async updateMemberById(memberCd: number, dto: ModifyMemberDto): Promise<UpdateResponse> {
-        const modifyResult: UpdateResult = await this.memberRepository.update(memberCd, dto);
-        const { affected } = modifyResult;
+        const updateResult: UpdateResult = await this.memberRepository.update(memberCd, dto);
+        const { affected } = updateResult;
+
+        if (!affected) {
+            throw new DBException('DB Exception - Member Unchanged or failed');
+        }
 
         return {
-            affected: affected,
-            memberCd: memberCd
+            memberCd
         };
     }
 
     async deleteMemberById(memberCd: number): Promise<DeleteResponse> {
-        const removeResult: DeleteResult = await this.memberRepository.delete(memberCd);
-        const { affected } = removeResult;
+        const deleteResult: DeleteResult = await this.memberRepository.delete(memberCd);
+        const { affected } = deleteResult;
+
+        if (!affected) {
+            throw new DBException('DB Exception - Member Undeleted or failed');
+        }
 
         return {
-            affected: affected,
-            memberCd: memberCd
+            memberCd
         };
     }
 }
