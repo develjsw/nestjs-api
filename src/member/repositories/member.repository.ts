@@ -32,7 +32,7 @@ export class MemberRepository {
             order: {
                 regDate: 'DESC'
             },
-            skip: skip,
+            skip,
             take: pageSize
         });
     }
