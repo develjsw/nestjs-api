@@ -30,6 +30,7 @@
     "@nestjs/throttler": "^6.2.1",
     "@nestjs/typeorm": "^9.0.1",
     "@slack/client": "^5.0.2",
+    "artillery": "^2.0.21",
     "cache-manager": "^5.2.3",
     "cache-manager-redis-yet": "^4.1.2",
     "class-transformer": "^0.5.1",
