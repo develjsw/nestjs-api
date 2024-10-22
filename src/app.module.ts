@@ -11,8 +11,8 @@ import { CommonCodeModule } from './common-code/common-code.module';
 import { MemberModule } from './member/member.module';
 import { SlackModule } from 'nestjs-slack-webhook';
 import { TestModule } from './test/test.module';
-import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
-import { APP_GUARD } from '@nestjs/core';
+// import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
+// import { APP_GUARD } from '@nestjs/core';
 
 let configuration;
 switch (process.env.NODE_ENV) {
@@ -48,11 +48,11 @@ switch (process.env.NODE_ENV) {
             useFactory: (configService: ConfigService) => configService.get('slack')
         }),
         /* Throttler 설정 */
-        ThrottlerModule.forRootAsync({
+        /*ThrottlerModule.forRootAsync({
             imports: [ConfigModule],
             inject: [ConfigService],
             useFactory: (configService: ConfigService) => [configService.get('throttler')]
-        }),
+        }),*/
         CommonModule,
         CommonCodeModule,
         MemberModule,
@@ -62,11 +62,11 @@ switch (process.env.NODE_ENV) {
     controllers: [AppController],
     /* service, repository */
     providers: [
-        AppService,
-        {
+        AppService
+        /*{
             provide: APP_GUARD,
             useClass: ThrottlerGuard
-        }
+        }*/
     ]
 })
 export class AppModule {}
