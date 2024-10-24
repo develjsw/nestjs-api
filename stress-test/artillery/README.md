@@ -35,13 +35,13 @@
     EX) artillery run 파일명.yml
     
     config:
-    target: 'http://localhost:3000'     # 테스트할 NestJS API 서버의 URL
-    phases:
-    - duration: 60                      # 테스트 지속 시간 (s)
-    arrivalRate: 1000                   # 초당 1000개의 새로운 요청을 보냄
+      target: 'http://localhost:3000'     # 테스트할 NestJS API 서버의 URL
+      phases:
+        - duration: 60                      # 테스트 지속 시간 (s)
+          arrivalRate: 1000                   # 초당 1000개의 새로운 요청을 보냄
     scenarios:
-    - name: '[Stress Test]'
-      flow:
-        - get:
-          url: '/health'                # 테스트할 endpoint
+      - name: '[Stress Test]'
+        flow:
+          - get:
+              url: '/health'                # 테스트할 endpoint
     ~~~
