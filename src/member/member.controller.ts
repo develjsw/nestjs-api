@@ -7,11 +7,11 @@ import {
     UpdateResponse
 } from '../common/response/response.service';
 import { MemberService } from './member.service';
+import { CreateMemberDto } from './dto/create-member.dto';
 import { ModifyMemberDto } from './dto/modify-member.dto';
 import { ListMemberDto } from './dto/list-member.dto';
 import { ManagerException } from '../common/exception/manager-exception';
 import { Member } from './entities/mysql/member.entity';
-import { CreateMemberDto } from '../type/generic-entity.type';
 
 @Controller('members')
 export class MemberController {
