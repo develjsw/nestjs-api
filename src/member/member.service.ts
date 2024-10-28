@@ -1,4 +1,5 @@
 import { Inject, Injectable, Scope } from '@nestjs/common';
+import { CreateMemberDto } from './dto/create-member.dto';
 import { ModifyMemberDto } from './dto/modify-member.dto';
 import { DBException } from '../common/exception/db-exception';
 import { plainToClass } from 'class-transformer';
@@ -8,7 +9,6 @@ import { InsertResponse, UpdateResponse, DeleteResponse, TResponseOfPaging } fro
 import { MemberRepository } from './repositories/member.repository';
 import { Member } from './entities/mysql/member.entity';
 import { ManagerException } from '../common/exception/manager-exception';
-import { CreateMemberDto } from '../type/generic-entity.type';
 
 @Injectable({ scope: Scope.REQUEST })
 export class MemberService {
@@ -23,8 +23,8 @@ export class MemberService {
     }
 
     async createMember(dto: CreateMemberDto): Promise<InsertResponse> {
-        const regDate = this.nowDate;
-        const memberDto = { regDate, ...dto };
+        const memberDto = plainToClass(CreateMemberDto, dto);
+        memberDto.regDate = this.nowDate;
 
         try {
             return await this.memberRepository.createMember(memberDto);
