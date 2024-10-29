@@ -27,7 +27,7 @@ function serializeBigIntAndDateTime(obj: any): string {
 
         // 날짜 포맷 처리: ISO 8601 형식의 문자열을 'YYYY-MM-DD HH:mm:ss'로 변환
         if (typeof value === 'string' && isValidDate(value)) {
-            return moment(value).format('YYYY-MM-DD HH:mm:ss');
+            return moment.utc(value).format('YYYY-MM-DD HH:mm:ss');
         }
 
         return value;
