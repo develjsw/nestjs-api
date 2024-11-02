@@ -3,7 +3,7 @@ import { IsEmail, IsNotEmpty, IsOptional, IsString, Length } from 'class-validat
 export class CreateMemberDto {
     @IsNotEmpty()
     @IsString()
-    memberNm: string;
+    memberName: string;
 
     @IsOptional()
     @IsString()

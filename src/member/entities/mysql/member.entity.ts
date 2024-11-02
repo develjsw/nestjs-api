@@ -5,20 +5,20 @@ export enum EMemberStatus {
     D = '탈퇴'
 }
 
-@Entity('TB_MEMBER')
+@Entity('tb_member')
 export class Member {
     @PrimaryGeneratedColumn({
-        name: 'MEMBER_ID'
+        name: 'member_id'
     })
     memberId: number;
 
     @Column('varchar', {
-        name: 'MEMBER_NM'
+        name: 'member_name'
     })
-    memberNm: string;
+    memberName: string;
 
     @Column('varchar', {
-        name: 'NICK_NAME'
+        name: 'nick_name'
     })
     nickName: string;
 
@@ -33,9 +33,9 @@ export class Member {
     email: string;
 
     @Column('varchar', {
-        name: 'STATUS'
+        name: 'member_status'
     })
-    status: EMemberStatus;
+    memberStatus: EMemberStatus;
 
     @CreateDateColumn({
         type: 'datetime',
