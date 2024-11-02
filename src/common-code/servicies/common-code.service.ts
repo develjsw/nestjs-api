@@ -15,8 +15,8 @@ export class CommonCodeService {
         private readonly commonCodeMainRepository: CommonCodeMainRepository
     ) {}
 
-    async getCommonCodeMainAndSub(): Promise<CommonCodeMain[]> {
-        const result: CommonCodeMain[] = await this.commonCodeMainRepository.getCommonCodeMainAndSub();
+    async findCommonCodeMainAndSub(): Promise<CommonCodeMain[]> {
+        const result: CommonCodeMain[] = await this.commonCodeMainRepository.findCommonCodeMainAndSub();
 
         if (!result.length) {
             throw new ManagerException(9902, 'Not Found - CommonCodeMains');
@@ -25,7 +25,7 @@ export class CommonCodeService {
         return result;
     }
 
-    async getCommonCodeMainById(mainCd: string): Promise<CommonCodeMain[]> {
+    async findCommonCodeMainAndSubById(mainCd: string): Promise<CommonCodeMain[]> {
         const key = await this.changeFormatService.changeFormatOfRedisKey(
             redisKey.inApi.common.code.main,
             [mainCd],
@@ -38,7 +38,7 @@ export class CommonCodeService {
         }
 
         try {
-            const result: CommonCodeMain[] = await this.commonCodeMainRepository.getCommonCodeMainAndSubById(mainCd);
+            const result: CommonCodeMain[] = await this.commonCodeMainRepository.findCommonCodeMainAndSubById(mainCd);
 
             if (result.length) {
                 await this.redisCacheService.set(key, result, 1000 * 60);

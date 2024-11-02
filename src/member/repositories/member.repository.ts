@@ -27,7 +27,7 @@ export class MemberRepository {
         };
     }
 
-    async getMembersWithPaging(pageSize: number, skip: number): Promise<Member[]> {
+    async findMemberListWithPaging(pageSize: number, skip: number): Promise<Member[]> {
         return await this.memberRepository.find({
             order: {
                 regDate: 'DESC'
@@ -37,11 +37,11 @@ export class MemberRepository {
         });
     }
 
-    async getCountMembers(): Promise<number> {
+    async findMemberListCount(): Promise<number> {
         return await this.memberRepository.count();
     }
 
-    async getMemberByCode(memberId: number): Promise<Member | null> {
+    async findMemberById(memberId: number): Promise<Member | null> {
         return await this.memberRepository.findOne({
             where: { memberId } // (= memberId: memberId) 객체 리터럴에서 속성 이름과 변수의 이름이 동일한 경우 이를 축약할 수 있는 속성명 축약이 적용됨.
         });

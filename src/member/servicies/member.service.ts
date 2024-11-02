@@ -39,18 +39,18 @@ export class MemberService {
         }
     }
 
-    async getMembersWithPaging(dto: ListMemberDto): Promise<TResponseOfPaging<Member>> {
+    async findMemberListWithPaging(dto: ListMemberDto): Promise<TResponseOfPaging<Member>> {
         const page: number = dto.page;
         const pageSize: number = dto.pageSize;
         const skip: number = (page - 1) * pageSize;
 
-        const totalCount: number = await this.memberRepository.getCountMembers();
+        const totalCount: number = await this.memberRepository.findMemberListCount();
 
         if (!totalCount) {
             throw new ManagerException(9902, 'Not Found - Members');
         }
 
-        const members: Member[] = await this.memberRepository.getMembersWithPaging(pageSize, skip);
+        const members: Member[] = await this.memberRepository.findMemberListWithPaging(pageSize, skip);
 
         return {
             pagingInfo: { page, totalCount },
@@ -58,8 +58,8 @@ export class MemberService {
         };
     }
 
-    async getMemberById(memberId: number): Promise<Member> {
-        const detail: Member | null = await this.memberRepository.getMemberByCode(memberId);
+    async findMemberById(memberId: number): Promise<Member> {
+        const detail: Member | null = await this.memberRepository.findMemberById(memberId);
 
         if (!detail) {
             throw new ManagerException(9902, 'Not Found - Member');

@@ -10,13 +10,13 @@ export class CommonCodeMainRepository {
         this.commonCodeMainRepository = this.dataSource.getRepository(CommonCodeMain);
     }
 
-    async getCommonCodeMainAndSub(): Promise<CommonCodeMain[]> {
+    async findCommonCodeMainAndSub(): Promise<CommonCodeMain[]> {
         return await this.commonCodeMainRepository.find({
             relations: ['commonCodeSubs']
         });
     }
 
-    async getCommonCodeMainAndSubById(mainCd: string): Promise<CommonCodeMain[]> {
+    async findCommonCodeMainAndSubById(mainCd: string): Promise<CommonCodeMain[]> {
         return await this.commonCodeMainRepository.find({
             where: {
                 mainCd,
