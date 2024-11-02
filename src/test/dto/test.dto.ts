@@ -5,7 +5,7 @@ type TTestStatus = 'A' | 'B';
 export class TestDto {
     @IsOptional()
     @IsNumber()
-    memberCd: number;
+    memberId: number;
 
     @IsOptional()
     @IsString()

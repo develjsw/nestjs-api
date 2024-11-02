@@ -31,7 +31,7 @@ export class MemberSubscribe implements EntitySubscriberInterface<Member> {
             // TODO : 엔티티가 업데이트된 경우에만 실행할 로직
             try {
                 // await event.manager.find(Member, {
-                //     where: { memberCd: 값 }
+                //     where: { memberId: 값 }
                 // });
             } catch (error) {
                 console.log(error);
