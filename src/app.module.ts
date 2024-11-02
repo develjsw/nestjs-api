@@ -13,6 +13,7 @@ import { SlackModule } from 'nestjs-slack-webhook';
 import { TestModule } from './test/test.module';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { APP_GUARD } from '@nestjs/core';
+import { GoodsModule } from './goods/goods.module';
 
 let configuration;
 switch (process.env.NODE_ENV) {
@@ -56,6 +57,7 @@ switch (process.env.NODE_ENV) {
         CommonModule,
         CommonCodeModule,
         MemberModule,
+        GoodsModule,
         TestModule
     ],
     /* controller */

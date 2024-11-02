@@ -1,14 +1,19 @@
 import { Inject, Injectable, Scope } from '@nestjs/common';
-import { CreateMemberDto } from './dto/create-member.dto';
-import { ModifyMemberDto } from './dto/modify-member.dto';
-import { DBException } from '../common/exception/db-exception';
+import { CreateMemberDto } from '../dto/create-member.dto';
+import { ModifyMemberDto } from '../dto/modify-member.dto';
+import { DBException } from '../../common/exception/db-exception';
 import { plainToClass } from 'class-transformer';
-import { ListMemberDto } from './dto/list-member.dto';
-import { SlackService } from '../common/slack/slack.service';
-import { InsertResponse, UpdateResponse, DeleteResponse, TResponseOfPaging } from '../common/response/response.service';
-import { MemberRepository } from './repositories/member.repository';
-import { Member } from './entities/mysql/member.entity';
-import { ManagerException } from '../common/exception/manager-exception';
+import { ListMemberDto } from '../dto/list-member.dto';
+import { SlackService } from '../../common/slack/slack.service';
+import {
+    InsertResponse,
+    UpdateResponse,
+    DeleteResponse,
+    TResponseOfPaging
+} from '../../common/response/response.service';
+import { MemberRepository } from '../repositories/member.repository';
+import { Member } from '../entities/mysql/member.entity';
+import { ManagerException } from '../../common/exception/manager-exception';
 
 @Injectable({ scope: Scope.REQUEST })
 export class MemberService {
@@ -34,18 +39,18 @@ export class MemberService {
         }
     }
 
-    async getMembersWithPaging(dto: ListMemberDto): Promise<TResponseOfPaging<Member>> {
+    async findMemberListWithPaging(dto: ListMemberDto): Promise<TResponseOfPaging<Member>> {
         const page: number = dto.page;
         const pageSize: number = dto.pageSize;
         const skip: number = (page - 1) * pageSize;
 
-        const totalCount: number = await this.memberRepository.getCountMembers();
+        const totalCount: number = await this.memberRepository.findMemberListCount();
 
         if (!totalCount) {
             throw new ManagerException(9902, 'Not Found - Members');
         }
 
-        const members: Member[] = await this.memberRepository.getMembersWithPaging(pageSize, skip);
+        const members: Member[] = await this.memberRepository.findMemberListWithPaging(pageSize, skip);
 
         return {
             pagingInfo: { page, totalCount },
@@ -53,8 +58,8 @@ export class MemberService {
         };
     }
 
-    async getMemberById(memberId: number): Promise<Member> {
-        const detail: Member | null = await this.memberRepository.getMemberByCode(memberId);
+    async findMemberById(memberId: number): Promise<Member> {
+        const detail: Member | null = await this.memberRepository.findMemberById(memberId);
 
         if (!detail) {
             throw new ManagerException(9902, 'Not Found - Member');

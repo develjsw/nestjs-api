@@ -6,7 +6,7 @@ import {
     TResponseOfPaging,
     UpdateResponse
 } from '../common/response/response.service';
-import { MemberService } from './member.service';
+import { MemberService } from './servicies/member.service';
 import { CreateMemberDto } from './dto/create-member.dto';
 import { ModifyMemberDto } from './dto/modify-member.dto';
 import { ListMemberDto } from './dto/list-member.dto';
@@ -30,15 +30,15 @@ export class MemberController {
     }
 
     @Get()
-    async getMembersWithPaging(@Query(new ValidationPipe()) dto: ListMemberDto) {
-        const result: TResponseOfPaging<Member> = await this.memberService.getMembersWithPaging(dto);
+    async getMemberListWithPaging(@Query(new ValidationPipe()) dto: ListMemberDto) {
+        const result: TResponseOfPaging<Member> = await this.memberService.findMemberListWithPaging(dto);
 
         return this.responseService.start(result).responseBody;
     }
 
     @Get(':id')
     async getMemberById(@Param('id', ParseIntPipe) memberId: number) {
-        const result: Member = await this.memberService.getMemberById(memberId);
+        const result: Member = await this.memberService.findMemberById(memberId);
 
         return this.responseService.start(result).responseBody;
     }

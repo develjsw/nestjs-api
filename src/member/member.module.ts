@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { MemberController } from './member.controller';
 import { ResponseService } from '../common/response/response.service';
-import { MemberService } from './member.service';
+import { MemberService } from './servicies/member.service';
 import { MemberRepository } from './repositories/member.repository';
 import { MemberSubscribe } from './entities/mysql/member.subscribe';
 
