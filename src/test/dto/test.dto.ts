@@ -9,7 +9,7 @@ export class TestDto {
 
     @IsOptional()
     @IsString()
-    memberNm: string;
+    memberName: string;
 
     @IsOptional()
     @IsString()
@@ -30,7 +30,7 @@ export class TestDto {
     @IsOptional()
     @IsString()
     @IsIn(['A', 'B'], { message: 'Type mismatch' })
-    status: TTestStatus;
+    memberStatus: TTestStatus;
 }
 
 export class TestDateDto {

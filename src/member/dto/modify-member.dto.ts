@@ -3,7 +3,7 @@ import { IsEmail, IsOptional, IsString, Length } from 'class-validator';
 export class ModifyMemberDto {
     @IsOptional()
     @IsString()
-    memberNm: string;
+    memberName: string;
 
     @IsOptional()
     @IsString()
