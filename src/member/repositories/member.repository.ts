@@ -19,11 +19,11 @@ export class MemberRepository {
 
     async createMember(createMemberDto: CreateMemberDto): Promise<InsertResponse> {
         const result: InsertResult = await this.memberRepository.insert(createMemberDto);
-        const { identifiers: memberCdList } = result;
-        const memberCds = memberCdList.map((item) => item.memberCd);
+        const { identifiers: memberIdList } = result;
+        const memberIds = memberIdList.map((item) => item.memberId);
 
         return {
-            memberCds
+            memberIds
         };
     }
 
@@ -41,14 +41,14 @@ export class MemberRepository {
         return await this.memberRepository.count();
     }
 
-    async getMemberByCode(memberCd: number): Promise<Member | null> {
+    async getMemberByCode(memberId: number): Promise<Member | null> {
         return await this.memberRepository.findOne({
-            where: { memberCd } // (= memberCd: memberCd) 객체 리터럴에서 속성 이름과 변수의 이름이 동일한 경우 이를 축약할 수 있는 속성명 축약이 적용됨.
+            where: { memberId } // (= memberId: memberId) 객체 리터럴에서 속성 이름과 변수의 이름이 동일한 경우 이를 축약할 수 있는 속성명 축약이 적용됨.
         });
     }
 
-    async updateMemberById(memberCd: number, dto: ModifyMemberDto): Promise<UpdateResponse> {
-        const updateResult: UpdateResult = await this.memberRepository.update(memberCd, dto);
+    async updateMemberById(memberId: number, dto: ModifyMemberDto): Promise<UpdateResponse> {
+        const updateResult: UpdateResult = await this.memberRepository.update(memberId, dto);
         const { affected } = updateResult;
 
         if (!affected) {
@@ -56,12 +56,12 @@ export class MemberRepository {
         }
 
         return {
-            memberCd
+            memberId
         };
     }
 
-    async deleteMemberById(memberCd: number): Promise<DeleteResponse> {
-        const deleteResult: DeleteResult = await this.memberRepository.delete(memberCd);
+    async deleteMemberById(memberId: number): Promise<DeleteResponse> {
+        const deleteResult: DeleteResult = await this.memberRepository.delete(memberId);
         const { affected } = deleteResult;
 
         if (!affected) {
@@ -69,7 +69,7 @@ export class MemberRepository {
         }
 
         return {
-            memberCd
+            memberId
         };
     }
 }

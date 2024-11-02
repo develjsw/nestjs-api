@@ -37,25 +37,25 @@ export class MemberController {
     }
 
     @Get(':id')
-    async getMemberById(@Param('id', ParseIntPipe) memberCd: number) {
-        const result: Member = await this.memberService.getMemberById(memberCd);
+    async getMemberById(@Param('id', ParseIntPipe) memberId: number) {
+        const result: Member = await this.memberService.getMemberById(memberId);
 
         return this.responseService.start(result).responseBody;
     }
 
     @Patch(':id')
     async updateMemberById(
-        @Param('id', ParseIntPipe) memberCd: number,
+        @Param('id', ParseIntPipe) memberId: number,
         @Body(new ValidationPipe()) dto: ModifyMemberDto
     ) {
-        const result: UpdateResponse = await this.memberService.updateMemberById(memberCd, dto);
+        const result: UpdateResponse = await this.memberService.updateMemberById(memberId, dto);
 
         return this.responseService.start(result).responseBody;
     }
 
     @Delete(':id')
-    async deleteMemberById(@Param('id', ParseIntPipe) memberCd: number) {
-        const result: DeleteResponse = await this.memberService.deleteMemberById(memberCd);
+    async deleteMemberById(@Param('id', ParseIntPipe) memberId: number) {
+        const result: DeleteResponse = await this.memberService.deleteMemberById(memberId);
 
         return this.responseService.start(result).responseBody;
     }

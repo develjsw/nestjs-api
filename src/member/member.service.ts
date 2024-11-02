@@ -53,8 +53,8 @@ export class MemberService {
         };
     }
 
-    async getMemberById(memberCd: number): Promise<Member> {
-        const detail: Member | null = await this.memberRepository.getMemberByCode(memberCd);
+    async getMemberById(memberId: number): Promise<Member> {
+        const detail: Member | null = await this.memberRepository.getMemberByCode(memberId);
 
         if (!detail) {
             throw new ManagerException(9902, 'Not Found - Member');
@@ -63,21 +63,21 @@ export class MemberService {
         return detail;
     }
 
-    async updateMemberById(memberCd: number, dto: ModifyMemberDto): Promise<UpdateResponse> {
+    async updateMemberById(memberId: number, dto: ModifyMemberDto): Promise<UpdateResponse> {
         const memberDto = plainToClass(ModifyMemberDto, dto);
         memberDto.modDate = this.nowDate;
 
         try {
-            return await this.memberRepository.updateMemberById(memberCd, memberDto);
+            return await this.memberRepository.updateMemberById(memberId, memberDto);
         } catch (error) {
             await this.slackService.send(`회원 수정 도중 에러 발생! - ${error}`);
             throw new DBException(error.message);
         }
     }
 
-    async deleteMemberById(memberCd: number): Promise<DeleteResponse> {
+    async deleteMemberById(memberId: number): Promise<DeleteResponse> {
         try {
-            return await this.memberRepository.deleteMemberById(memberCd);
+            return await this.memberRepository.deleteMemberById(memberId);
         } catch (error) {
             await this.slackService.send(`회원 삭제 도중 에러 발생! - ${error}`);
             throw new DBException(error.message);

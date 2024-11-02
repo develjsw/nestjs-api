@@ -8,9 +8,9 @@ export enum EMemberStatus {
 @Entity('TB_MEMBER')
 export class Member {
     @PrimaryGeneratedColumn({
-        name: 'MEMBER_CD'
+        name: 'MEMBER_ID'
     })
-    memberCd: number;
+    memberId: number;
 
     @Column('varchar', {
         name: 'MEMBER_NM'

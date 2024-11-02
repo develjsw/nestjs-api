@@ -35,13 +35,13 @@ export type TResponseOfPaging<T> = {
 };
 
 export interface UpdateResponse {
-    [primaryKeyName: string]: number; // ex) memberCd: number
+    [primaryKeyName: string]: number; // ex) memberId: number
 }
 export interface DeleteResponse {
-    [primaryKeyName: string]: number; // ex) memberCd: number
+    [primaryKeyName: string]: number; // ex) memberId: number
 }
 type TInsertResult = {
-    [primaryKeysName: string]: Array<any>; // ex memberCds: []
+    [primaryKeysName: string]: Array<any>; // ex memberIds: []
 };
 export type InsertResponse = TInsertResult;
 
