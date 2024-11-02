@@ -1,6 +1,15 @@
-import { Controller } from '@nestjs/common';
+import { Controller, Get } from '@nestjs/common';
+import { ResponseService } from '../common/response/response.service';
+import { GoodsService } from './servicies/goods.service';
 
 @Controller('goods')
 export class GoodsController {
-    constructor() {}
+    constructor(private readonly responseService: ResponseService, private readonly goodsService: GoodsService) {}
+
+    @Get()
+    async getGoodsAll() {
+        const result = await this.goodsService.findGoodsAll();
+
+        return this.responseService.start(result).responseBody;
+    }
 }
