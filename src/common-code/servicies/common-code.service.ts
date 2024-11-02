@@ -1,10 +1,10 @@
 import { Inject, Injectable, InternalServerErrorException } from '@nestjs/common';
-import { RedisCacheService } from '../common/cache/redis-cache.service';
-import { redisKey } from '../config/redis-key';
-import { CommonCodeMainRepository } from './repositories/common-code-main.repository';
-import { CommonCodeMain } from './entities/mysql/common-code-main.entity';
-import { ManagerException } from '../common/exception/manager-exception';
-import { ChangeFormatService } from '../common/helper/change-format.service';
+import { RedisCacheService } from '../../common/cache/redis-cache.service';
+import { redisKey } from '../../config/redis-key';
+import { CommonCodeMainRepository } from '../repositories/common-code-main.repository';
+import { CommonCodeMain } from '../entities/mysql/common-code-main.entity';
+import { ManagerException } from '../../common/exception/manager-exception';
+import { ChangeFormatService } from '../../common/helper/change-format.service';
 
 @Injectable()
 export class CommonCodeService {

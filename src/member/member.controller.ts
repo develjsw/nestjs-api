@@ -6,7 +6,7 @@ import {
     TResponseOfPaging,
     UpdateResponse
 } from '../common/response/response.service';
-import { MemberService } from './member.service';
+import { MemberService } from './servicies/member.service';
 import { CreateMemberDto } from './dto/create-member.dto';
 import { ModifyMemberDto } from './dto/modify-member.dto';
 import { ListMemberDto } from './dto/list-member.dto';

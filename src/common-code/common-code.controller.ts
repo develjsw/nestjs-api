@@ -1,6 +1,6 @@
 import { Controller, Get, Param } from '@nestjs/common';
 import { ResponseService } from '../common/response/response.service';
-import { CommonCodeService } from './common-code.service';
+import { CommonCodeService } from './servicies/common-code.service';
 import { CommonCodeMain } from './entities/mysql/common-code-main.entity';
 
 @Controller('common-codes')

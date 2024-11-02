@@ -1,14 +1,19 @@
 import { Inject, Injectable, Scope } from '@nestjs/common';
-import { CreateMemberDto } from './dto/create-member.dto';
-import { ModifyMemberDto } from './dto/modify-member.dto';
-import { DBException } from '../common/exception/db-exception';
+import { CreateMemberDto } from '../dto/create-member.dto';
+import { ModifyMemberDto } from '../dto/modify-member.dto';
+import { DBException } from '../../common/exception/db-exception';
 import { plainToClass } from 'class-transformer';
-import { ListMemberDto } from './dto/list-member.dto';
-import { SlackService } from '../common/slack/slack.service';
-import { InsertResponse, UpdateResponse, DeleteResponse, TResponseOfPaging } from '../common/response/response.service';
-import { MemberRepository } from './repositories/member.repository';
-import { Member } from './entities/mysql/member.entity';
-import { ManagerException } from '../common/exception/manager-exception';
+import { ListMemberDto } from '../dto/list-member.dto';
+import { SlackService } from '../../common/slack/slack.service';
+import {
+    InsertResponse,
+    UpdateResponse,
+    DeleteResponse,
+    TResponseOfPaging
+} from '../../common/response/response.service';
+import { MemberRepository } from '../repositories/member.repository';
+import { Member } from '../entities/mysql/member.entity';
+import { ManagerException } from '../../common/exception/manager-exception';
 
 @Injectable({ scope: Scope.REQUEST })
 export class MemberService {

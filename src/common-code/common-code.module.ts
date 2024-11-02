@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { CommonCodeService } from './common-code.service';
+import { CommonCodeService } from './servicies/common-code.service';
 import { CommonCodeController } from './common-code.controller';
 import { ResponseService } from '../common/response/response.service';
 import { CommonCodeMainRepository } from './repositories/common-code-main.repository';
