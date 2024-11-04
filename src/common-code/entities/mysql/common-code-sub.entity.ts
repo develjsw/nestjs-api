@@ -1,50 +1,50 @@
 import { Column, Entity, ManyToOne, PrimaryColumn, JoinColumn } from 'typeorm';
 import { CommonCodeMain } from './common-code-main.entity';
 
-@Entity('TB_COMMON_CODE_SUB')
+@Entity('tb_common_code_sub')
 export class CommonCodeSub {
     @PrimaryColumn('varchar', {
-        name: 'MAIN_CD'
+        name: 'main_cd'
     })
     mainCd: string;
 
     @PrimaryColumn('varchar', {
-        name: 'SUB_CD'
+        name: 'sub_cd'
     })
     subCd: string;
 
     @Column('varchar', {
-        name: 'SUB_NM'
+        name: 'sub_nm'
     })
     subNm: string;
 
     @Column('varchar', {
-        name: 'CODE_DESC'
+        name: 'code_desc'
     })
     codeDesc: string;
 
     @Column('int', {
-        name: 'SORT_NO'
+        name: 'sort_no'
     })
     sortNo: number;
 
     @Column('varchar', {
-        name: 'IS_USE'
+        name: 'is_use'
     })
     isUse: string;
 
-    @Column({
-        name: 'REG_DATE'
+    @Column('datetime', {
+        name: 'reg_date'
     })
     regDate?: Date;
 
-    @Column({
-        name: 'MOD_DATE'
+    @Column('datetime', {
+        name: 'mod_date'
     })
     modDate?: Date;
 
-    @Column({
-        name: 'DEL_DATE'
+    @Column('datetime', {
+        name: 'del_date'
     })
     delDate?: Date;
 
