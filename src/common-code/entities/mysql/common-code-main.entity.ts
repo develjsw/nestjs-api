@@ -1,40 +1,40 @@
 import { Column, Entity, OneToMany, PrimaryColumn } from 'typeorm';
 import { CommonCodeSub } from './common-code-sub.entity';
 
-@Entity('TB_COMMON_CODE_MAIN') // 실제 테이블명
+@Entity('tb_common_code_main') // 실제 테이블명 (MySQL은 대소문자 상관X)
 export class CommonCodeMain {
     @PrimaryColumn('varchar', {
-        name: 'MAIN_CD' // 실제 컬럼명
+        name: 'main_cd' // 실제 컬럼명 (MySQL은 대소문자 상관X)
     })
     mainCd: string; // 사용 할 변수명
 
     @Column('varchar', {
-        name: 'MAIN_NM'
+        name: 'main_nm'
     })
     mainNm: string;
 
     @Column('varchar', {
-        name: 'IS_USE'
+        name: 'is_use'
     })
     isUse: string;
 
     @Column({
         type: 'datetime',
-        name: 'REG_DATE',
+        name: 'reg_date',
         nullable: true
     })
     regDate?: Date;
 
     @Column({
         type: 'datetime',
-        name: 'MOD_DATE',
+        name: 'mod_date',
         nullable: true
     })
     modDate?: Date;
 
     @Column({
         type: 'datetime',
-        name: 'DEL_DATE',
+        name: 'del_date',
         nullable: true
     })
     delDate?: Date;
