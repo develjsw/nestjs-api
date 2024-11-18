@@ -15,6 +15,7 @@ import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { APP_GUARD } from '@nestjs/core';
 import { GoodsModule } from './goods/goods.module';
 import * as path from 'path';
+import { PaymentModule } from './payment/payment.module';
 
 // let configuration;
 // switch (process.env.NODE_ENV) {
@@ -112,6 +113,7 @@ switch (process.env.NODE_ENV) {
         CommonCodeModule,
         MemberModule,
         GoodsModule,
+        PaymentModule,
         TestModule
     ],
     /* controller */
