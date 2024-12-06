@@ -8,10 +8,18 @@ export class GoodsService {
     constructor(private readonly goodsRepository: GoodsRepository) {}
 
     async findGoodsAll(): Promise<Goods[]> {
-        const goodsAll = await this.goodsRepository.findGoodsAll();
+        const goodsAll: Goods[] = await this.goodsRepository.findGoodsAll();
 
         if (!goodsAll.length) throw new ManagerException(9902, 'Not Found - Goods');
 
         return goodsAll;
+    }
+
+    async findGoodsById(goodsId: number): Promise<Goods> {
+        const goods: Goods = await this.goodsRepository.findGoodsById(goodsId);
+
+        if (!goods) throw new ManagerException(9902, 'Not Found - Goods');
+
+        return goods;
     }
 }
