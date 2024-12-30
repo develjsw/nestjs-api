@@ -5,6 +5,7 @@ import { PersonService } from './extends-abstract-class/person.service';
 import { FirstQueryExecuteService } from './transaction/prepared-query-runner/first-query-execute.service';
 import { DeveloperService } from './implements-interface/developer.service';
 import { DesignerService } from './implements-interface/designer.service';
+import { PromiseFunctionService } from './promise-function/promise-function.service';
 
 @Controller('test')
 export class TestController {
@@ -19,7 +20,8 @@ export class TestController {
         private firstQueryExecuteService: FirstQueryExecuteService,
         private personService: PersonService,
         private developerService: DeveloperService,
-        private designerService: DesignerService
+        private designerService: DesignerService,
+        private promiseFunctionService: PromiseFunctionService
     ) {}
 
     @Post('transaction/prepared-query-runner')
@@ -42,5 +44,15 @@ export class TestController {
         const result = await this.developerService.getPersonInfo(); // Test Case1
         //const result = await this.designerService.getPersonInfo(); // Test Case2
         return this.responseService.start(result).responseBody;
+    }
+
+    @Get('promise-function-all')
+    async promiseFunctionAll() {
+        await this.promiseFunctionService.promiseFunctionAll();
+    }
+
+    @Get('promise-function-allSettled')
+    async promiseFunctionAllSettled() {
+        await this.promiseFunctionService.promiseFunctionAllSettled();
     }
 }
