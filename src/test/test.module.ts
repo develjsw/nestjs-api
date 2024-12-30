@@ -8,6 +8,7 @@ import { PersonService } from './extends-abstract-class/person.service';
 import { Member } from '../member/entities/mysql/member.entity';
 import { DeveloperService } from './implements-interface/developer.service';
 import { DesignerService } from './implements-interface/designer.service';
+import { PromiseFunctionService } from './promise-function/promise-function.service';
 
 @Module({
     imports: [TypeOrmModule.forFeature([Member])],
@@ -18,7 +19,8 @@ import { DesignerService } from './implements-interface/designer.service';
         LastQueryExecuteService,
         PersonService,
         DeveloperService,
-        DesignerService
+        DesignerService,
+        PromiseFunctionService
     ]
 })
 export class TestModule {}
